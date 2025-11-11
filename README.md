@@ -26,16 +26,16 @@ Celui qui paie l'orchestre, choisi la musique.
 
 ## 🛠️ Objectifs
 
-1.  Centraliser et documenter mon homelab.\
-2.  Gérer les services conteneurisés.\
-3.  Synchroniser mes données.\
+1.  Centraliser et documenter mon homelab.
+2.  Gérer les services conteneurisés.
+3.  Synchroniser mes données.
 4.  Maintenir un flux de documents dématérialisé.
 
 ## 📚 Ressources externes
 
--   https://obsidian.md\
--   https://podman.io\
--   https://syncthing.net\
+-   https://obsidian.md
+-   https://podman.io
+-   https://syncthing.net
 -   https://paperless-ngx.readthedocs.io
 
 ## 🧾 Licence
