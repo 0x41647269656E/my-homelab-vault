@@ -41,6 +41,58 @@ Pour l’utiliser :
 ├── README.md\
 └── LICENSE
 
+my-homelab-vault/
+│
+├── .obsidian/                 # Configuration propre à Obsidian (thème, plugins, workspace…)
+│
+├── 00_INDEX/                  # Table des matières, liens internes, cartes mentales
+│   ├── README.md
+│   └── Map_of_Content.md
+│
+├── 01_INFRA/                  # Cœur de ton homelab : matériel et réseau
+│   ├── hardware/              # Détails du matériel utilisé
+│   │   ├── server_specs.md
+│   │   ├── nas_setup.md
+│   │   └── network_diagram.png
+│   ├── network/               # Topologie réseau, VLAN, firewall
+│   │   ├── homelab_network.md
+│   │   └── router_config.md
+│   └── virtualization/        # Hyperviseurs, VMs, LXC, etc.
+│       ├── proxmox_setup.md
+│       └── storage_pools.md
+│
+├── 02_SERVICES/               # Tous les services auto-hébergés
+│   ├── reverse-proxy/         # Nginx Proxy Manager, Traefik, Caddy…
+│   ├── monitoring/            # Grafana, Prometheus, etc.
+│   ├── automation/            # Ansible, Cron, Watchtower
+│   ├── media/                 # Jellyfin, Sonarr, Radarr, etc.
+│   └── docs-management/       # Paperless-ngx, etc.
+│
+├── 03_DATAFLOW/               # Schémas de flux de données, sauvegardes
+│   ├── backup_strategy.md
+│   ├── syncthing_nodes.md
+│   └── diagrams/
+│
+├── 04_SECURITY/               # Sécurité, chiffrement, authentification
+│   ├── vpn.md
+│   ├── firewall_rules.md
+│   └── passwords_policy.md
+│
+├── 05_AUTOMATION/             # Scripts, templates, tâches automatisées
+│   ├── ansible/
+│   ├── bash/
+│   └── powershell/
+│
+├── 06_RECHERCHE_ET_TESTS/     # Expérimentations, sandbox
+│   ├── docker-experiments.md
+│   └── k3s_cluster_notes.md
+│
+├── imgs/                      # Images utilisées dans les notes
+│
+├── README.md                  # Présentation du projet
+└── LICENSE
+
+
 ## 🛠️ Objectifs
 
 1.  Centraliser et documenter mon homelab.
