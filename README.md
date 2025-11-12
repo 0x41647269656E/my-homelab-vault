@@ -3,6 +3,7 @@
 ![Banner](https://raw.githubusercontent.com/0x41647269656E/my-homelab-vault/refs/heads/main/banner.png)
 
 Bienvenue dans mon dépot **Obsidian Vault pour Homelab** !\
+
 Dans ce dépôt, je conserve et documente toute mon infrastructure personnelle homelab : de la création, le choix des composants de la machine, l'installation des systèmes jusqu'à l'exploitation des services.
 
 Je développe mon homelab comme une infrastructure personnelle de services auto-hébergée afin de conserver le contrôle de mes données, automatiser mon environnement numérique, tester des architectures complexes, expérimenter sans contrainte et, surtout, reprendre le contrôle total sur mes outils et mes informations en limitant l'accès à mes informations à des intelligences artificielles de recommandation de contenus apprenant des usages de chacun sur internet.
@@ -10,14 +11,30 @@ Je développe mon homelab comme une infrastructure personnelle de services auto-
 If you are not paying for the product, you _are_ the product
 Celui qui paie l'orchestre, choisi la musique.
 
+---
+## 🧭 How to use
+
+Ce dépôt est un **vault Obsidian** prêt à l’emploi.  
+Pour l’utiliser :
+
+1. **Installer [Obsidian](https://obsidian.md)** si ce n’est pas déjà fait.  
+2. **Cloner ou télécharger** ce dépôt sur votre machine :  
+```bash
+   git clone git@github.com:0x41647269656E/my-homelab-vault.git
+```
+3. **Ouvrir Obsidian**.
+4. Depuis l’écran d’accueil, cliquer sur **“Open folder as vault”**.
+5. Sélectionner le dossier cloné `my-homelab-vault`.
+6. Obsidian chargera automatiquement la configuration (`.obsidian/`) et affichera le contenu du vault.
+
 ## 🚀 Technologies principales utilisées
 
-| Technologie   | Rôle                               |
-|---------------|------------------------------------|
-| Obsidian.md   | Documentation et prise de notes.   |
-| Podman        | Gestion de conteneurs.             |
-| Syncthing     | Synchronisation P2P.               |
-| Paperless-ngx | Gestion numérique des documents.   |
+| Technologie   | Rôle                             |
+| ------------- | -------------------------------- |
+| Obsidian.md   | Documentation et prise de notes. |
+| Podman        | Gestion de conteneurs.           |
+| Syncthing     | Synchronisation P2P.             |
+| Paperless-ngx | Gestion numérique des documents. |
 
 ## 📂 Structure du dépôt
 
