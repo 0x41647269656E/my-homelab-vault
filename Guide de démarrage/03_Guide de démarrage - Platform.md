@@ -1,6 +1,4 @@
 
-
-
 ### Le projet FreeNAS / TrueNAS
 
 **TrueNas** est un système d'exploitation orienté "services" développé pour la création de NAS sous licence libre BSD. Basé sur l'OS FreeBSD, Il supporte de nombreux protocoles : CIFS, Samba, FTP, NFS, rsync, AFP, iSCSI, les rapport S.M.A.R.T et le RAID.
@@ -35,7 +33,7 @@ Là où TrueNAS Core propose de s'interfacer avec des cartes matérielles assura
 ![[Pasted image 20230219014124.png]]
 
 
-TrueNAS Enterprise propose des services supplémentaires incluant support technique, support avancé de matériel
+TrueNAS Enterprise propose des services supplémentaires incluant support technique, support avancé de matériel.
 
 ![[Pasted image 20230219014025.png]]
 
@@ -52,17 +50,18 @@ TrueNAS Enterprise propose des services supplémentaires incluant support techni
 
 TrueNAS est certainement la meilleure option pour celui qui veux une solution modulable et pilotable à l'aide d'une interface graphique. La richesse de la distribution vient de son support d'OpenZFS (solution avancée de stockage (Snapshots, déduplication, clones, réplication...Etc)) et de la richesse de son magasin d'applications prêtes à l'emploi. Sa communauté est la plus grande dans le monde des distributions orientées NAS grace au soutien du modèle par une entreprise assurant un support des éditions entreprise de TrueNAS.
 
-### Xpenology (DiskStation Manager (_DSM_))
+### Xpenology (DiskStation Manager)
 
 Xpenology est une distribution du logiciel inclus dans les NAS Synology qu'il est possible d'installer sur de nombreuses configurations. Son installation requière, comme un Hackintosh, de faire passer la machine comme un matériel Synology reconnu. Une emulation de composants, la modification de l'adresse MAC de la carte réseau et d'autres sécurités doivent être contournées pour permettre l'installation de cette distribution. Synology utilise un code open-source pour diffuser l'offre de services de l'OS. Certains estiment que le logiciel étant bati par dessus devraient l'etre également (voir [Code Source Synology](http://sourceforge.net/projects/dsgpl/ "Code Source Synology")).
 
 Retour d'expérience : Au delà de la curiosité technique que cela représente, je ne suis pas à l'aise à l'idée de faire tourner une distribution présentant par nature un retard dans la distribution des mises à jours de sécurité du système d'exploitation. La communauté devant faire sauter tous les verrous du constructeur pour proposer la mise à jour. L’installation de cette dernière est parfois très périlleuse. Enfin, on rappellera que les premières victimes du [ransonware Synolocker](https://korben.info/synolocker.html) étaient des utilisateurs XPEnology.
 
+### Unraid
+Unraid est une solution idéale pour transformer un ordinateur personnel ou un petit serveur en une véritable plateforme d’hébergement domestique, simple à administrer et très flexible. Basé sur un noyau Linux, il utilise un système de stockage hybride reposant sur XFS, Btrfs et un mécanisme de parité logiciel, permettant de combiner des disques de tailles et de types variés sans contrainte de RAID classique. Cette approche unique assure à la fois la protection des données et une extension de capacité aisée, tout en conservant un accès direct à chaque disque en cas de panne. Unraid gère nativement Docker et KVM, ce qui permet d’exécuter simultanément des conteneurs et des machines virtuelles isolées, le tout depuis une interface web fluide et claire. Il est compatible avec la majorité des architectures x86_64 et reconnaît sans difficulté la plupart des contrôleurs SATA, NVMe ou USB, ce qui en fait une solution particulièrement adaptée aux serveurs réutilisant du matériel grand public. Pour un homelab, c’est un excellent compromis entre puissance, flexibilité et simplicité : on peut y héberger Plex, Jellyfin, Nextcloud ou encore des services d’automatisation sans avoir besoin d’une expertise Linux approfondie.
 
+### Proxmox
 
-Unraid
-Proxmox
-
+Proxmox adopte une approche plus orientée “infrastructure” et se prête particulièrement bien à un homelab évolutif et technique. Reposant sur Debian, il intègre nativement KVM pour la virtualisation complète et LXC pour les conteneurs légers, offrant un environnement capable d’exécuter aussi bien des systèmes d’exploitation complets que des services isolés à faible empreinte. Son moteur de stockage s’appuie sur ZFS, LVM, Ceph et NFS, permettant de créer des volumes redondants, de gérer le thin provisioning et de bénéficier de snapshots rapides et fiables. Proxmox exploite pleinement le matériel moderne, supportant les processeurs Intel et AMD 64 bits, la virtualisation VT-x/AMD-V, ainsi que le passthrough PCIe et GPU pour des usages plus avancés comme le transcodage ou la simulation réseau. Son interface web centralise la gestion des nœuds, du stockage et des réseaux virtuels, tout en offrant une ligne de commande puissante pour les utilisateurs expérimentés. Dans un homelab, il offre un terrain d’expérimentation complet, robuste et proche des environnements professionnels, idéal pour apprendre la gestion de clusters, la haute disponibilité et l’orchestration de services complexes.
 
 
 https://discord.gg/bKBkDbEMbX

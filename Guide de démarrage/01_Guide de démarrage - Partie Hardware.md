@@ -67,6 +67,9 @@ En conclusion :
 - 🚫 Attention à la taille du bloc d'alimentation (externe) pour les installations cossues (et la chauffe...)
 ## Louer un serveur dans un datacenter
 
+![[03240848.jpg]]
+_Serveur Dedibox chez Scaleway à partir de 15€/mois_
+
 Disposer d'une machine sans avoir aucunes nuisances sonores dans l'appartement, quel pied ! Attention aux coûts en revanche... Cette option est parfaite pour celui qui souhaite héberger des services sans se soucier du matériel.
 
 Voir : [https://hostingby.design/](https://hostingby.design/), [https://www.scaleway.com/fr/dedibox/start/](https://www.scaleway.com/fr/dedibox/start/)
@@ -168,3 +171,37 @@ Quatre critères à prendre en compte :
 - Tolérance à la panne des composants (Ram ECC vs standard, RAID...)
 - Si hébergé à domicile, attention au bruit ! N'oubliez pas que cette machine fonctionnera probablement 24h/24.
 - La consommation d'une bécane allumé 24/24 est bien supérieure à celle d'un NAS Synology ultra optimisé. Pensez au coût de l'électricité.
+
+## Mac Mini
+
+![[design_thermal_static__qwpwput2piyy_large.jpg]]
+_vendus à partir de 699€ en France_
+
+Le **Mac mini** constitue une plateforme idéale pour un **homelab personnel** : Grâce à sa faible consommation électrique, sa stabilité matérielle et son fonctionnement quasi inaudible, le Mac mini permet de conserver en permanence un petit serveur à domicile sans nuisance sonore ni surcoût énergétique.
+
+### Mac Mini et les conteneurs
+
+> [!failure] Attention aux processeurs Apple Silicon (ARM64)**
+>
+> Les Mac mini récents (M1, M2, M3…) utilisent une architecture **ARM 64 bits**, différente des processeurs Intel x86. Cela signifie que **toutes les images Docker ou Podman doivent être compatibles ARM**.
+>
+> Si tu lances une image non prévue pour cette architecture, tu risques de rencontrer 
+> 	-  des erreurs du type `exec format error` au démarrage du conteneur,
+> 	- ou une exécution extrêmement lente sous émulation (QEMU).
+
+**Recommandation :**
+- Privilégie les images multi-architecture (`linux/arm64`, `linux/amd64`) disponibles sur Docker Hub. 
+- Vérifie la compatibilité des images à installer avant l'achat de la machine.
+- Certains services (ex. Paperless-ngx, Grafana, Home Assistant) proposent déjà des builds ARM officiels mais ce n'est pas le cas de tous les logiciels.
+
+### Transcodage vidéo avec accélération matérielle
+
+Concernant l'utilisation d'un Plex ou d'un Jellyfin, Les puces **Apple Silicon (M1, M2, M3)** intègrent un **GPU unifié** et surtout un **moteur multimédia matériel dédié** capable de gérer en accélération matérielle :
+- Décodage et encodage **H.264**
+- Décodage et encodage **HEVC / H.265**
+- Décodage **VP9** (partiel sur M1, complet sur M2/M3)
+- Décodage **AV1** (à partir du M3)
+
+Ce moteur vidéo est **extrêmement efficace**, très économe et parfaitement intégré à **macOS** via le framework **VideoToolbox**. C’est ce qu’utilisent Plex et Jellyfin dans leur **intégration native MACOS** (pas en mode container.)
+
+Le GPU Apple n’a pas encore de **pilotes stables** pour la partie vidéo (transcodage matériel). Les projets **Asahi Linux** et **Corellium** travaillent activement dessus, mais ce n’est **pas encore prêt pour la production.**
