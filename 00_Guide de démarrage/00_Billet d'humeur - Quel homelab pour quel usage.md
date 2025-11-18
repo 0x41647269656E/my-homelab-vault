@@ -3,7 +3,6 @@ title: Quel homelab pour quel usage ?
 author: "0x41647269656E"
 series: Guide de démarrage
 ---
-
 Après plusieurs années à utiliser des services "cloud", je me lance dans l'auto-hébergement d'applications. Vous trouverez ci-dessous un dossier complet de mes recherches. Les choix que j'ai évalué, les choses qui ont marché mais aussi les choses qui m'ont paru trop complexe à implémenter, les échecs et les ratés.
 # Le pourquoi du comment
 

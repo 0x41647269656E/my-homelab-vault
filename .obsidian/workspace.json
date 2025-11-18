@@ -13,12 +13,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "00_Guide de démarrage/04_Guide de démarrage - Security.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "04_Guide de démarrage - Security"
+            }
+          },
+          {
+            "id": "75bbc93e7e9aeaf7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "02_Infra/operating_system/Operating System - Concepts dans un homelab.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Operating System - Concepts dans un homelab"
             }
           }
         ]
@@ -40,11 +54,10 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical",
-                "autoReveal": false
+                "sortOrder": "alphabetical"
               },
               "icon": "lucide-folder-closed",
-              "title": "Explorateur de fichiers"
+              "title": "Files"
             }
           },
           {
@@ -160,33 +173,44 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Ouvrir le sélecteur rapide": false,
-      "graph:Ouvrir la vue graphique": false,
-      "canvas:Créer une nouvelle toile": false,
-      "daily-notes:Ouvrir la note quotidienne": false,
-      "templates:Insérer le modèle": false,
-      "command-palette:Ouvrir la palette de commandes": false,
-      "bases:Create new base": false
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
     }
   },
   "active": "db363dcbf169682b",
   "lastOpenFiles": [
+    "02_Infra/operating_system/Operating System - Concepts dans un homelab.md",
+    "00_Guide de démarrage/04_Guide de démarrage - Security.md",
+    "08_Others/iptable_config.md",
+    "08_Others/Sans titre.md",
+    "README.md",
+    "08_Others",
+    "07_Testing",
+    "06_Automation",
+    "05_Security",
+    "04_Dataflow",
+    "03_Services",
+    "02_Infra/operating_system",
+    "02_Infra/network",
+    "02_Infra/hardware",
+    "02_Infra",
+    "00_Guide de démarrage/00_Billet d'humeur - Quel homelab pour quel usage.md",
+    "08_Others/Templates Docker Compose/Photoprism/photoprism.md",
+    "00_Guide de démarrage/03_Guide de démarrage - Platform.md",
+    "00_Guide de démarrage/02_Guide de démarrage - Storage.md",
+    "00_Guide de démarrage/01_Guide de démarrage - Partie Hardware.md",
+    "08_Others/architecture_immich_k3s_minio_HA.md",
+    "homelab.lan.md",
     "01_INFRA/network/router_config.md",
-    "01_INFRA/containers",
     "01_INFRA/network/homelab_network.md",
     "01_INFRA/hardware/network_diagram.md",
-    "01_INFRA/network",
     "01_INFRA/hardware/setup.md",
     "01_INFRA/hardware/server_specs.md",
     "00_INDEX/Map_of_Content.md",
-    "01_INFRA/hardware",
-    "01_INFRA",
-    "Templates Docker Compose/Photoprism/photoprism.md",
-    "00_INDEX",
-    "README.md",
-    "Templates Docker Compose/Photoprism",
-    "Templates Docker Compose",
-    "homelab.lan.md",
     "Guide de démarrage/Sans titre.md",
     "Guide de démarrage/Billet d'humeur - Quel homelab pour quel usage.md",
     "Guide de démarrage/Guide de démarrage - Partie Hardware.md",
