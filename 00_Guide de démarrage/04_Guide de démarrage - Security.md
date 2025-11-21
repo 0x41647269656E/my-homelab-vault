@@ -61,7 +61,59 @@ Un accès root à distance est un risque significatif : il supprime toute étape
 Chaque utilisateur ou service ne doit disposer que des droits strictement nécessaires. Cela limite les actions possibles en cas de compromission.
 
 ## La compartimentation des applications
-### Silotage physique
+
+La compartimentation des applications consiste à isoler chaque service, application ou composant afin de limiter les interactions non nécessaires entre eux. Ce principe, central en cybersécurité, vise à empêcher qu'une compromission d'un élément puisse se propager à l’ensemble du système. En d’autres termes, même si un service est attaqué, l’impact reste contenu dans un périmètre strictement défini.
+
+Dans le contexte d’un homelab, où de nombreuses applications cohabitent (serveurs médias, services domotiques, archivage de documents, outils de partage, bibliothèques de photos, vidéos, etc.), une isolation efficace réduit considérablement les risques de fuite de données ou d’escalade latérale.
+
+Le silotage (ou compartimentation) consiste à séparer les applications sur des machines ou environnements distincts : serveurs dédiés, machines virtuelles, voire clusters de virtualisation. Cette approche offre une isolation forte : un service compromis n’a pas de visibilité directe sur ceux hébergés ailleurs.
+
+Dans un homelab, pour isoler des services sensibles comme ceux contenant des données personnelles, on trouve :
+
+- L’utilisation de machines virtuelles
+- l’usage de différents hôtes physiques
+- La mise en oeuvre de conteneurisation
+- La segmentation de l'infrastructure réseau
+- La mise en oeuvre de firewalls (applicatifs ou physiques)
+
+Cette approche améliore la résilience globale, mais peut demander davantage de ressources matérielles (notamment la RAM) et de maintenance.
+
+### Conteneurisation vs machines virtuelles : avantages et limites
+
+La conteneurisation et la virtualisation répondent toutes deux à un besoin d’isolation, mais avec des approches et niveaux de sécurité différents. Dans un homelab, il est important de comprendre leurs forces, leurs faiblesses et leurs impacts sur la sécurité, la performance et la consommation de ressources.
+
+#### **Conteneurisation
+
+Les pour et les contres : 
+- ✅ Légèreté et rapidité : les conteneurs partagent le kernel de l’hôte, consomment peu de ressources et se déploient très rapidement.
+- ✅ Reproductibilité et portabilité : les images permettent des déploiements identiques sur divers environnements.
+- ✅ Isolation logique avancée : grâce aux namespaces, cgroups et capabilities, chaque application peut être fortement cloisonnée.
+- ✅ Écosystème mature : Docker, Podman, Kubernetes, Nomad… facilitent l’orchestration et l’automatisation.
+- ✅ Mode rootless : réduit les risques en exécutant les conteneurs sans privilèges administrateur sur l’hôte.
+- 🚫 Partage du kernel : une faille dans le kernel affecte tous les conteneurs.
+- 🚫 Élévation de privilèges : des attaques existent permettant à un conteneur vulnérable d’obtenir un accès root sur l’hôte.
+- 🚫 Isolation limitée comparée à une VM : les protections restent principalement logicielles.
+- 🚫 Mode rootless pas toujours compatible avec toutes les applications (notamment celles nécessitant des ports <1024 ou des capacités particulières).
+- 🚫 Risque de mauvaise configuration : montages de volumes trop permissifs, network mode « host », conteneurs en privileged mode, etc.
+
+#### Virtualisation
+
+Les pour et les contres : 
+- ✅ Isolation forte : chaque VM dispose de son propre kernel, ce qui crée une véritable barrière entre les environnements
+- ✅ Confinement efficace : une compromission dans une VM n’impacte pas facilement les autres
+- ✅ Compatibilité élevée : possibilité d’exécuter différents OS (Linux, BSD, Windows…)
+- ✅ Support matériel (VT-x/AMD-V, IOMMU, passthrough) permettant d’aller jusqu’à isoler des périphériques entiers (GPU, Carte PCI Express, péripéhriques USB)
+- ✅ Surface d’attaque plus prévisible : les hyperviseurs (ESXi, Proxmox, Xen…) sont conçus pour la sécurité
+- 🚫 Consommation de ressources importante : chaque VM requiert CPU, RAM et stockage dédiés (et une quantité supplémentaire est consommée)
+- 🚫 Temps de déploiement plus long : installation d’un OS complet, maintenance plus lourde
+- 🚫 Complexité accrue de patching / MaJ si le nombre de VMs augmente
+- 🚫 Overhead matériel non négligeable, surtout sur des homelabs modestes
+- 🚫 Snapshots / backups volumineux et gestion parfois lourde
+
+En pratique, un homelab mature peut combiner les deux approches :
+- Un hyperviseur pour isoler les rôles critiques (Reverse Proxy, Web Application Firewall, Certs & Secrets Management, présentation du stockage)
+- Des conteneurs pour la souplesse de gestion, le footprint léger et l’automatisation (services web, applications légères, monitoring, outils)
+
 ### Reduction de la visibilité de l'OS
 
 ### Droits d'accès des applications
