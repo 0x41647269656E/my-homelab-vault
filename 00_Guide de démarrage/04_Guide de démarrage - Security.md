@@ -27,6 +27,7 @@ Enfin, il est indispensable d’intégrer dans sa démarche une dimension **opé
 
 Le but est donc de garder une vision pragmatique de la sécurité appliquée à un environnement personnel : suffisamment structurée pour être efficace, mais suffisamment légère pour rester accessible et ne pas y passer 20h par semaine. C'est pourquoi nous nous intéressons particulièrement à la conteneurisation et à l'utilisation d'outils d'automatisation qui vont nous permettre de casser et reconstruire rapidement.
 
+---
 ## Hardening
 
 Le hardening consiste à réduire la surface d’attaque d’un système en éliminant tout ce qui n’est pas strictement nécessaire à son fonctionnement : services inutiles, ports ouverts par défaut, configurations faibles, permissions trop larges ou comportements non contrôlés. L’objectif n’est pas seulement de se protéger contre une intrusion externe, mais aussi de limiter les risques internes, les erreurs de configuration et les effets indésirables d’une mauvaise isolation entre services.
@@ -60,6 +61,7 @@ Un accès root à distance est un risque significatif : il supprime toute étape
 #### 5. Adopter un principe du _least privilege_
 Chaque utilisateur ou service ne doit disposer que des droits strictement nécessaires. Cela limite les actions possibles en cas de compromission.
 
+---
 ## La compartimentation des applications
 
 La compartimentation des applications consiste à isoler chaque service, application ou composant afin de limiter les interactions non nécessaires entre eux. Ce principe, central en cybersécurité, vise à empêcher qu'une compromission d'un élément puisse se propager à l’ensemble du système. En d’autres termes, même si un service est attaqué, l’impact reste contenu dans un périmètre strictement défini.
@@ -82,7 +84,7 @@ Cette approche améliore la résilience globale, mais peut demander davantage de
 
 La conteneurisation et la virtualisation répondent toutes deux à un besoin d’isolation, mais avec des approches et niveaux de sécurité différents. Dans un homelab, il est important de comprendre leurs forces, leurs faiblesses et leurs impacts sur la sécurité, la performance et la consommation de ressources.
 
-#### **Conteneurisation
+#### Conteneurisation
 
 Les pour et les contres : 
 - ✅ Légèreté et rapidité : les conteneurs partagent le kernel de l’hôte, consomment peu de ressources et se déploient très rapidement.
@@ -114,11 +116,63 @@ En pratique, un homelab mature peut combiner les deux approches :
 - Un hyperviseur pour isoler les rôles critiques (Reverse Proxy, Web Application Firewall, Certs & Secrets Management, présentation du stockage)
 - Des conteneurs pour la souplesse de gestion, le footprint léger et l’automatisation (services web, applications légères, monitoring, outils)
 
-### Reduction de la visibilité de l'OS
+En combinant silotage physique, isolation logicielle et gestion stricte des droits, la compartimentation devient un pilier essentiel du hardening et de la sécurité globale d’un homelab moderne.
 
-### Droits d'accès des applications
-
-## Application des recommandations CNIL / NIST (CSF 2.0)
+---
 ## Mises à jour et patching régulier
 
-## Utilisation systématique d'authentification ou de flux VPN privés pour l'accès distant aux applications
+Les mises à jour sont l’un des piliers les plus sous-estimés, mais aussi l’un des plus efficaces pour maintenir un homelab sécurisé. La plupart des attaques automatisées ne ciblent pas des failles inconnues ( _aussi appelées zero-day_ ), mais des vulnérabilités publiques, souvent corrigées depuis longtemps.
+### Pourquoi c’est critique ?
+
+- Un service non mis à jour peut être scanné et compromis automatiquement en quelques minutes après son exposition.
+- Un hyperviseur non patché représente un risque majeur si une vulnérabilité permet une évasion de VM.
+- Des conteneurs basés sur des images anciennes peuvent embarquer des failles critiques.
+### Bonnes pratiques
+
+- Automatiser les mises à jour de sécurité lorsque c’est raisonnable (unattended-upgrades, Watchtower, Ansible).    
+- Mettre à jour en priorité les services exposés à Internet : reverse proxy, portail SSO, VPN.
+- Utiliser des images minimales et actualisées pour les conteneurs.
+- Planifier un cycle régulier (hebdomadaire ou mensuel) pour passer en revue l’ensemble des services.
+- Tester les mises à jour lorsque cela peut avoir un impact : bases de données, hyperviseur, services critiques.
+
+L’objectif est de rester à jour sans y passer trop de temps, mais sans laisser des machines critiques accumuler des vulnérabilités.
+
+---
+
+## Utilisation systématique d’authentification ou de flux privés pour l’accès distant aux applications
+
+Lorsque l’on souhaite accéder à son homelab depuis l’extérieur, il est indispensable de protéger chaque service avec une authentification solide ou, mieux encore, de ne pas les exposer du tout sans passer par une solution type VPN, overlay, zero trust, proxy...
+
+### Pourquoi éviter l’exposition directe ?
+
+- Internet est constamment scanné par des bots cherchant des ports ouverts.
+- Dans un environnement professionnel, les applications sont constamment surveillées et mises à jour (quoi que...), mais sur un homelab, le rythme de mise à jour et les temps alloué à l'administration peuvent être plus faible qu'une équipe à temps complet. Certaines de vos applications seront inévitablement exposées à des failles connues.
+- Un simple service non protégé (Jellyfin, une vieille interface admin, un panneau proxmox…) peut offrir un accès total à l'infrastructure.
+- Une faille dans un service exposé peut immédiatement compromettre l’ensemble du réseau domestique de la personne chez qui le homelab est installé (Caméra wifi ? TV connectée ? Domotique ?).
+### Approches recommandées
+
+#### 1. Passer par un VPN privé (voir [[05_Guide de démarrage - Accès distants]])
+
+Solutions recommandées : WireGuard, Tailscale, OpenVPN.  
+Avantages :
+- Pas d’exposition directe des services internes.
+- Tunnel chiffré.
+- Authentification forte (clé, MFA, SSO).
+- Simplicité de configuration et excellente sécurité.
+#### 2. Imposer une authentification forte
+
+Pour les services nécessitant d’être exposés (reverse proxy, ressources publiques) :
+- Utiliser un SSO (Authentik, Authelia, Keycloak ou Gitlab (oui oui...)).
+- Activer le MFA.
+- Limiter les accès via un WAF ou un filtrage IP.
+- Éviter de laisser les services gérer eux-mêmes le login/password (souvent faible).
+- Éviter de laisser LES GENS gérer eux-mêmes leurs mots de passes...
+#### 3. Segmenter et limiter les flux
+- Ne pas mettre tous les services dans le même réseau.
+- Isoler les applications critiques (NAS, backups, gestion des secrets).
+- Ne pas exposer les dashboards, panels admin ou monitoring au travers d'internet
+### Architecture typique conseillée
+- Reverse proxy exposé avec MFA obligatoire.
+- Services utilisateurs accessibles **après authentification SSO**.
+- Services internes (base de données, stockage, monitoring) accessibles uniquement via VPN
+- Segmentation réseau stricte entre zones publiques, privées et administratives.
