@@ -151,7 +151,7 @@ Lorsque l’on souhaite accéder à son homelab depuis l’extérieur, il est in
 - Une faille dans un service exposé peut immédiatement compromettre l’ensemble du réseau domestique de la personne chez qui le homelab est installé (Caméra wifi ? TV connectée ? Domotique ?).
 ### Approches recommandées
 
-#### 1. Passer par un VPN privé (voir [[05_Guide de démarrage - Accès distants]])
+#### 1. Passer par un VPN privé (voir [[05_Gestion des accès distants]])
 
 Solutions recommandées : WireGuard, Tailscale, OpenVPN.  
 Avantages :
