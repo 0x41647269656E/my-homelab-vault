@@ -1,20 +1,48 @@
+---
+title: Les plateformes
+author: "0x41647269656E"
+series: Guide de démarrage
+tags:
+  - freenas
+  - truenas
+  - dsm
+  - synology
+  - xpenology
+  - unraid
+  - proxmox
+date: 25-11-2025
+---
+# Les plateformes
 
-### Le projet FreeNAS / TrueNAS
+Les systèmes comme TrueNAS, Openmediavault ou Unraid sont conçus pour transformer n’importe quel ordinateur en véritable serveur NAS, offrant une interface graphique intuitive où presque tout se fait en quelques clics : création de volumes, partage de fichiers, gestion des utilisateurs, sauvegardes automatiques, supervision du système, provisionnement d'applications, multimédia, etc.
 
-**TrueNas** est un système d'exploitation orienté "services" développé pour la création de NAS sous licence libre BSD. Basé sur l'OS FreeBSD, Il supporte de nombreux protocoles : CIFS, Samba, FTP, NFS, rsync, AFP, iSCSI, les rapport S.M.A.R.T et le RAID.
+Leur objectif est de rendre accessibles des technologies habituellement réservées aux professionnels, comme ZFS, la réplication ou la déduplication, tout en restant faciles à configurer.
 
-#### Historique du projet
+Grâce à ces OS spécialisés, on peut construire un NAS personnalisé, performant et fiable, sans avoir besoin de maîtriser les lignes de commande. Tout est pensé pour offrir l'expérience d’un NAS prêt à l’emploi, mais avec la flexibilité du matériel.
 
-Les premières versions de FreeNAS font leur apparition en 2005 et au cours de la décennie qui a suivi, il est devenu un nom connu avec plus de 10 millions de téléchargements et 1 million de déploiements dans le monde. Pendant de nombreuses années, FreeNAS et TrueNAS se sont développés côte à côte chez iXsystems - FreeNAS en tant qu'édition logicielle libre prise en charge par la communauté et TrueNAS en tant qu'édition d'entreprise pour les applications de stockage critiques. Les deux ont été maintenus séparément bien qu'ils aient beaucoup en commun, y compris une base de code presque identique.
+ ---
+## Le projet FreeNAS / TrueNAS
 
-#### TrueNAS Core (ex FreeNAS)
+### Historique du projet
 
-TrueNAS Core® (précédemment connu sous le nom de FreeNAS) est un système d'exploitation basé sur FreeBSD
-Avec son RAID intégré, ses puissants outils de gestion des données et sa capacité à détecter et réparer automatiquement la corruption silencieuse des données (et la pourriture des bits), il se révèle être un très bon choix pour monter un NAS orienté autours de services.
+Les premières versions de FreeNAS sont apparues en 2005. Au cours des années, le logiciel est devenu très populaire, atteignant plus de 10 millions de téléchargements et plus d’un million de déploiements dans le monde. Pendant longtemps, FreeNAS et TrueNAS ont évolué en parallèle chez iXsystems : FreeNAS était la version libre soutenue par la communauté, tandis que TrueNAS était l’édition destinée aux entreprises pour les usages de stockage critiques. Bien qu’ils aient été gérés séparément, les deux partageaient une base de code commune.
+#### TrueNAS Core
 
 ![[Pasted image 20230219013306.png]]
+
+TrueNAS Core (Ex-FreeNAS) est un système d'exploitation orienté "services" développé sous licence libre BSD. Basé sur l'OS FreeBSD, Il supporte de nombreux protocoles : CIFS, Samba, FTP, NFS, rsync, AFP, iSCSI, les rapport S.M.A.R.T et son "RAID" intégré.
+
+TrueNAS Core tire sa fiabilité de l’une de ses technologies centrales : **le système de fichiers ZFS**.
+
+Pour rappel (voir l'article précédent [[02_Guide de démarrage - Storage]]), ZFS est un système de fichiers avancé conçu pour garantir la fiabilité et l’intégrité des données. ZFS intègre son propre système de RAID, le RAIDZ, qui remplace les RAID matériels et offre plusieurs niveaux de protection. Il propose aussi des outils puissants comme les snapshots, les clones, la compression et la déduplication pour gérer efficacement les données. L’un de ses atouts majeurs est la vérification systématique des blocs grâce aux checksums, permettant de détecter la corruption silencieuse et le bit rot. En cas d’erreur, ZFS peut automatiquement réparer les données via son mécanisme de self-healing. Le scrubbing, effectué régulièrement, analyse l’ensemble du stockage pour corriger les éventuelles anomalies. Grâce à ces fonctionnalités, TrueNAS Core offre une fiabilité exceptionnelle pour les services, les sauvegardes et les environnements critiques.
+
 > [!WARNING]
-> Il est fortement conseillé de suivre les guidelines disponibles sur le site officiel et d'utiliser un ensemble de composants compatibles. Ce n'est pas parce que le composant est ancien et qu'il as été utilisé dans des milliers de références de cartes qu'il est automatiquement compatible. Voir : [TrueNAS Core Hardware Guide](https://www.truenas.com/docs/core/gettingstarted/corehardwareguide/)
+> Il est fortement conseillé de suivre les guidelines disponibles sur le site officiel et d'utiliser un ensemble de composants compatibles. Ce n'est pas parce que le composant est ancien et qu'il as été utilisé dans des milliers de références de cartes mères qu'il est automatiquement compatible. Voir : [TrueNAS Core Hardware Guide](https://www.truenas.com/docs/core/gettingstarted/corehardwareguide/)
+
+> [!info] NDLR : 
+> De mon expérience, j'ai tenté d'intégrer TrueNAS Core en Juillet 2021 avec une carte mère [ASUS PRIME Z590M-PLUS](https://www.asus.com/fr/motherboards-components/motherboards/prime/prime-z590m-plus/techspec/), le NIC (_Network Interface Controller_) [Intel i219-V](https://www.intel.fr/content/www/fr/fr/products/sku/82186/intel-ethernet-connection-i219v/specifications.html) (Datant de 2015) présent sur ma carte mère n'était pas compatible avec TrueNAS Core nativement. Il nécessitait l'installation d'un driver. Petite particularité sur Free-BSD, ajouter un driver n’est pas aussi simple que sous Linux : cela nécessite généralement de recompiler le noyau. Concrètement, il faut récupérer le code source complet du noyau via Git, intégrer ou activer le pilote manquant, puis reconstruire et réinstaller l’ensemble du noyau pour que le matériel soit reconnu.
+> 
+> A date de cet article (25/11/2025), le contrôleur **Intel i219-V** _n’est toujours pas officiellement supporté_ **TrueNAS CORE**.
 
 #### TrueNAS SCALE
 
@@ -36,8 +64,6 @@ Là où TrueNAS Core propose de s'interfacer avec des cartes matérielles assura
 TrueNAS Enterprise propose des services supplémentaires incluant support technique, support avancé de matériel.
 
 ![[Pasted image 20230219014025.png]]
-
-
 
 #### Problèmes rencontrés
 ##### File system gourmand en RAM à cause de la dédup
@@ -64,16 +90,8 @@ Unraid est une solution idéale pour transformer un ordinateur personnel ou un p
 Proxmox adopte une approche plus orientée “infrastructure” et se prête particulièrement bien à un homelab évolutif et technique. Reposant sur Debian, il intègre nativement KVM pour la virtualisation complète et LXC pour les conteneurs légers, offrant un environnement capable d’exécuter aussi bien des systèmes d’exploitation complets que des services isolés à faible empreinte. Son moteur de stockage s’appuie sur ZFS, LVM, Ceph et NFS, permettant de créer des volumes redondants, de gérer le thin provisioning et de bénéficier de snapshots rapides et fiables. Proxmox exploite pleinement le matériel moderne, supportant les processeurs Intel et AMD 64 bits, la virtualisation VT-x/AMD-V, ainsi que le passthrough PCIe et GPU pour des usages plus avancés comme le transcodage ou la simulation réseau. Son interface web centralise la gestion des nœuds, du stockage et des réseaux virtuels, tout en offrant une ligne de commande puissante pour les utilisateurs expérimentés. Dans un homelab, il offre un terrain d’expérimentation complet, robuste et proche des environnements professionnels, idéal pour apprendre la gestion de clusters, la haute disponibilité et l’orchestration de services complexes.
 
 
-https://discord.gg/bKBkDbEMbX
 
 
-![[Pasted image 20230218210833.png]]
-
-![[Pasted image 20230218210907.png]]
-
-![[Pasted image 20230218211036.png]]
-
-![[Pasted image 20230218211701.png]]
 
 
 https://forum.level1techs.com/t/project-poorly-planned-truenas-build/184990
@@ -88,18 +106,14 @@ https://github.com/awesome-selfhosted/awesome-selfhosted
 
 # Les tests qui n'ont pas fonctionné
 
-
 https://www.openmediavault.org/
 
 
 ## Avoir tous les services sur la même machine
 Soufflerie dans l'appart
-
-
 ## Le RAID logiciel
 - En cas de perte, pas de récup possible
 - Les raid checks réguliers sur une grosse grappe
-
 ## FreeNas / TrueNAS
 - Basé sur FreeBSD : pas de prise en charge du contrôleur I-219V de ma carte mère : très courant sur les cartes mères. Un contrôleur gigabit ethernet intel à 2$ la puce. Sorti en 2015, FreeNas ne prends toujours pas en charge ce controleur. https://www.intel.fr/content/www/fr/fr/products/sku/82186/intel-ethernet-connection-i219v/specifications.html
 - Obligé de recompiler entièrement le noyau pour ajouter un driver.

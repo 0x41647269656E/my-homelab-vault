@@ -3,6 +3,7 @@ author: "0x41647269656E"
 title: Point sur l'electricité
 series: Guide de démarrage
 reading-time: 15m
+date: 22-11-2025
 ---
 # Sécurité électrique dans un homelab : normes, limites, protections et bonnes pratiques
 

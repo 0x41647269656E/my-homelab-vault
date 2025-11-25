@@ -6,7 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
-      "🏋️‍♂️"
+      "📋",
+      "❓",
+      "🏗",
+      "📡",
+      "⚡"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -30,5 +34,12 @@
     "debugMode": false,
     "useInternalPlugins": false
   },
-  "00_Guide de démarrage": "🏋️‍♂️"
+  "00_Guide de démarrage": "🏋️‍♂️",
+  "00_Guide de démarrage/00_Billet d'humeur - Quel homelab pour quel usage.md": "📋",
+  "00_Guide de démarrage/01_Partie Hardware.md": "🖥",
+  "00_Guide de démarrage/02_Partie Stockage.md": "💾",
+  "00_Guide de démarrage/04_La Securité.md": "👮",
+  "00_Guide de démarrage/05_Gestion des accès distants.md": "📡",
+  "00_Guide de démarrage/03_Les plateformes.md": "🏗",
+  "00_Guide de démarrage/06_Point sur l'electricité.md": "⚡"
 }

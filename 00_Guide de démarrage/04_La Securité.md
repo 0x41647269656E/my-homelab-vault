@@ -5,6 +5,7 @@ title: Security
 tags:
   - security
 reading-time: 30min
+date: 21-11-2025
 ---
 # La sécurité dans un homelab
 
