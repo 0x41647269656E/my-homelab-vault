@@ -26,6 +26,9 @@ Grâce à ces OS spécialisés, on peut construire un NAS personnalisé, perform
 ### Historique du projet
 
 Les premières versions de FreeNAS sont apparues en 2005. Au cours des années, le logiciel est devenu très populaire, atteignant plus de 10 millions de téléchargements et plus d’un million de déploiements dans le monde. Pendant longtemps, FreeNAS et TrueNAS ont évolué en parallèle chez iXsystems : FreeNAS était la version libre soutenue par la communauté, tandis que TrueNAS était l’édition destinée aux entreprises pour les usages de stockage critiques. Bien qu’ils aient été gérés séparément, les deux partageaient une base de code commune.
+
+### Les versions
+
 #### TrueNAS Core
 
 ![[Pasted image 20230219013306.png]]
@@ -48,44 +51,54 @@ Pour rappel (voir l'article précédent [[02_Guide de démarrage - Storage]]), Z
 
 ![[Pasted image 20230219014534.png]]
 
-TrueNAS SCALE® est une distribution HCI (Hyperconverged Infrastructure) Open Source basée sur Debian. Celle-ci propose un accès aux Linux Containers (LXC), le support de VMs (KVM), Docker et Kubernetes et d'un système de stockage de fichiers extensible basé sur ZFS et Gluster.
-
--   Hyperconverged Storage that Scales Up or Out
--   Integrated Linux Containers & VMs
--   Deploy as a Single Node or Cluster
--   Designed for Hybrid Clouds
--   Enterprise Support Options Coming Soon
-
-Là où TrueNAS Core propose de s'interfacer avec des cartes matérielles assurant le stockage, TrueNAS SCALE assure la Software Define Storage
-
 ![[Pasted image 20230219014124.png]]
 
+TrueNAS SCALE est une plateforme HCI (Hyperconverged Infrastructure) Open Source basée sur Debian. Elle combine du stockage défini par logiciel (SDS) avec des services de virtualisation et d’orchestration. Elle inclut :
+- un stockage hautement extensible basé sur ZFS et Gluster, permettant de monter en capacité (scale-up) ou d’ajouter des nœuds (scale-out)
+- le support natif des machines virtuelles (KVM)
+- l’intégration de conteneurs Linux, Docker et Kubernetes
+- la possibilité d’être déployée en nœud unique ou en cluster
+- une conception orientée Cloud hybride
 
-TrueNAS Enterprise propose des services supplémentaires incluant support technique, support avancé de matériel.
+Contrairement à TrueNAS CORE, qui repose davantage sur la compatibilité avec des cartes matérielles de stockage traditionnelles, TrueNAS SCALE fournit une solution de stockage entièrement définie par logiciel.
+
+#### TrueNAS Enterprise
+
+TrueNAS Enterprise offre, en complément, une suite de services professionnels :
+- support technique premium
+- support matériel avancé
+- stabilité renforcée
+
+et des options réservées aux appliances certifiées iXsystems.
 
 ![[Pasted image 20230219014025.png]]
 
-#### Problèmes rencontrés
-##### File system gourmand en RAM à cause de la dédup
-##### Les jails
-##### Non prise en charge du driver
-##### Compilation des sources du noyaux à chaque mise à jour
-##### Les Flashs de firmwares de cartes raids
+### Retour d'expérience et problèmes rencontrés
 
-#### Conclusions
+- Déduplication ZFS : Le système de fichiers utilisé peut rapidement devenir gourmand en mémoire, notamment lorsque la déduplication est activée. Cette fonctionnalité, bien qu’efficace pour économiser de l’espace, exige une quantité importante de RAM pour maintenir ses tables en mémoire et garantir des performances acceptables. La dédup nécessite de maintenir une DDT (Deduplication Table) en mémoire. Plus elle est grande, plus elle doit être gardée en RAM pour éviter des I/O massifs et catastrophiques en performance. Sur ZFS, ça consomme environ *1 à 5 Go de RAM par To* de données selon la nature des fichiers, le niveau de fragmentation et la répétitivité, ce à quoi il faut ajouter la RAM dédiée au système.
+
+- TrueNAS Core - les jails : À cela s’ajoute la gestion des jails, un mécanisme d’isolation applicative propre à FreeBSD qui nécessite une configuration spécifique et peut représenter une contrainte lorsqu’on souhaite intégrer des services ou des applications reposant sur d’autres technologies de conteneurisation (docker, podman, OCI, lxc..). Les images disponibles sur les registries publiques (Docker HUB, GHCR) ne sont pas consommables par les jails.
+
+On retrouve également la non-prise en charge de certains pilotes matériels (voir le point plus haut...), ce qui peut limiter la compatibilité avec des composants récents ou spécifiques, et obliger l’utilisateur à vérifier soigneusement son matériel avant installation. De plus, certaines opérations comme la compilation du noyau après chaque mise à jour du système peuvent rallonger les temps de maintenance et nécessiter un niveau d’expertise supplémentaire pour garantir la cohérence du système.
+
+Pour conclure, une grande communauté existe sur les mécanismes de flash de cartes RAID pour les rendre compatibles avec TrueNAS Core. Sur Reddit, on trouve des listes de cartes compatibles (possédant des clones chinois sur Ebay) utilisable avec ou sans flash de firmware de la carte. La gestion des mises à jour de firmware pour les cartes RAID peut s’avérer périeuse et fastidieuse : elle impose souvent des manipulations manuelles, des redémarrages ou l’utilisation d’outils dédiés.
+
+Voir l'excellente vidéo :  [HBA SAS vs RAID](https://youtu.be/xEbQohy6v8U)
+
+### Conclusions
 
 TrueNAS est certainement la meilleure option pour celui qui veux une solution modulable et pilotable à l'aide d'une interface graphique. La richesse de la distribution vient de son support d'OpenZFS (solution avancée de stockage (Snapshots, déduplication, clones, réplication...Etc)) et de la richesse de son magasin d'applications prêtes à l'emploi. Sa communauté est la plus grande dans le monde des distributions orientées NAS grace au soutien du modèle par une entreprise assurant un support des éditions entreprise de TrueNAS.
 
-### Xpenology (DiskStation Manager)
+## Xpenology (Synology DiskStation Manager)
 
 Xpenology est une distribution du logiciel inclus dans les NAS Synology qu'il est possible d'installer sur de nombreuses configurations. Son installation requière, comme un Hackintosh, de faire passer la machine comme un matériel Synology reconnu. Une emulation de composants, la modification de l'adresse MAC de la carte réseau et d'autres sécurités doivent être contournées pour permettre l'installation de cette distribution. Synology utilise un code open-source pour diffuser l'offre de services de l'OS. Certains estiment que le logiciel étant bati par dessus devraient l'etre également (voir [Code Source Synology](http://sourceforge.net/projects/dsgpl/ "Code Source Synology")).
 
-Retour d'expérience : Au delà de la curiosité technique que cela représente, je ne suis pas à l'aise à l'idée de faire tourner une distribution présentant par nature un retard dans la distribution des mises à jours de sécurité du système d'exploitation. La communauté devant faire sauter tous les verrous du constructeur pour proposer la mise à jour. L’installation de cette dernière est parfois très périlleuse. Enfin, on rappellera que les premières victimes du [ransonware Synolocker](https://korben.info/synolocker.html) étaient des utilisateurs XPEnology.
+Retour d'expérience : Au delà de la curiosité technique que cela représente, je ne suis pas à l'aise à l'idée de faire tourner une distribution présentant par nature un retard dans la distribution des mises à jours de sécurité du système d'exploitation. La communauté devant faire sauter tous les verrous du constructeur pour proposer la mise à jour. L’installation de cette dernière est parfois très périlleuse. Enfin, on rappellera que les premières victimes du [ransomware Synolocker](https://korben.info/synolocker.html) étaient des utilisateurs XPEnology.
 
-### Unraid
+## Unraid
 Unraid est une solution idéale pour transformer un ordinateur personnel ou un petit serveur en une véritable plateforme d’hébergement domestique, simple à administrer et très flexible. Basé sur un noyau Linux, il utilise un système de stockage hybride reposant sur XFS, Btrfs et un mécanisme de parité logiciel, permettant de combiner des disques de tailles et de types variés sans contrainte de RAID classique. Cette approche unique assure à la fois la protection des données et une extension de capacité aisée, tout en conservant un accès direct à chaque disque en cas de panne. Unraid gère nativement Docker et KVM, ce qui permet d’exécuter simultanément des conteneurs et des machines virtuelles isolées, le tout depuis une interface web fluide et claire. Il est compatible avec la majorité des architectures x86_64 et reconnaît sans difficulté la plupart des contrôleurs SATA, NVMe ou USB, ce qui en fait une solution particulièrement adaptée aux serveurs réutilisant du matériel grand public. Pour un homelab, c’est un excellent compromis entre puissance, flexibilité et simplicité : on peut y héberger Plex, Jellyfin, Nextcloud ou encore des services d’automatisation sans avoir besoin d’une expertise Linux approfondie.
 
-### Proxmox
+## Proxmox
 
 Proxmox adopte une approche plus orientée “infrastructure” et se prête particulièrement bien à un homelab évolutif et technique. Reposant sur Debian, il intègre nativement KVM pour la virtualisation complète et LXC pour les conteneurs légers, offrant un environnement capable d’exécuter aussi bien des systèmes d’exploitation complets que des services isolés à faible empreinte. Son moteur de stockage s’appuie sur ZFS, LVM, Ceph et NFS, permettant de créer des volumes redondants, de gérer le thin provisioning et de bénéficier de snapshots rapides et fiables. Proxmox exploite pleinement le matériel moderne, supportant les processeurs Intel et AMD 64 bits, la virtualisation VT-x/AMD-V, ainsi que le passthrough PCIe et GPU pour des usages plus avancés comme le transcodage ou la simulation réseau. Son interface web centralise la gestion des nœuds, du stockage et des réseaux virtuels, tout en offrant une ligne de commande puissante pour les utilisateurs expérimentés. Dans un homelab, il offre un terrain d’expérimentation complet, robuste et proche des environnements professionnels, idéal pour apprendre la gestion de clusters, la haute disponibilité et l’orchestration de services complexes.
 
