@@ -20,6 +20,8 @@ On parle de *raid matériel* pour désigner l'utilisation d'une "carte raid" phy
 
 A noter, un driver logiciel est nécessaire pour pouvoir piloter la carte. Celle-ci comporte un firmware que les communautés manipulent pour les rendre compatible avec les OS. Pour exemple, la carte LSI MegaRAID 9361-8i est très prisée de la communauté TrueNas car disponible sur internet à bas prix et, sous réserve de flasher le firmware, fonctionne nativement avec TrueNAS.
 
+Voir l'excellente vidéo :  [HBA SAS vs RAID](https://youtu.be/xEbQohy6v8U) et [ce commentaire explicatif](https://www.reddit.com/r/HomeServer/comments/t9z1zj/comment/hzy9twe/)
+
 ### Raid logiciel
 
 Sur le même modèle que le raid matériel, ici, les opérations de lecture/écritures, routage de données et calculs de parité sont réalisées par le CPU lequel discute avec le contrôleur de stockage AHCI. Dans ce cas de figure, les disques durs sont connectés directement sur la carte mère. Pour les environnements avec des besoins faibles en écriture ([HTPC](https://fr.wikipedia.org/wiki/Home_theater_personal_computer) par exemple...), cette solution peut être privilégiée pour réduire les coûts. Mais attention à prévoir un CPU suffisamment costaud. Mdadm est une solution d'émulation des technologies RAID installé nativement sur Ubuntu.
