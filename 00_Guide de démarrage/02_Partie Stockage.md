@@ -47,16 +47,19 @@ Sur le même modèle que le raid matériel, ici, les opérations de lecture/écr
 > 
 >  Pour corriger cela, il est nécessaire d’identifier les processus responsables des accès, de configurer correctement la mise en veille des disques avec `hdparm`, de limiter les écritures inutiles (en désactivant `atime` et certaines tâches système), ou d’envisager une gestion dynamique du montage du RAID (via `autofs` ou un script `systemd`).
 
-## ZFS - La solution next-gen
+## OpenZFS - La solution next-gen
 
-ZFS, qui signifie Zettabyte File System, est un système de fichiers performant et évolutif initialement développé par Sun Microsystems. Il offre des fonctionnalités **avancées** de gestion, d'intégrité et de fiabilité des données.
+OpenZFS est un fork communautaire et open-source du système de fichier ZFS (_Zettabyte File System_) initialement développé par Sun Microsystems pour son système Solaris. Ce système de fichier performant et évolutif offre des fonctionnalités **avancées** de gestion, d'intégrité et de fiabilité des données.
+
+( NDLR : Par abus de langage, je vais parler de ZFS, mais nous parlons de l'implémentation OpenZFS disponible sur les systèmes debian, freebsd...)
+
+### Pros
 
 ZFS présente de nombreux avantages par rapport aux systèmes de fichiers traditionnels :
 
-1. **Intégrité des données** : ZFS utilise un mécanisme de vérification de somme pour détecter et corriger les corruptions silencieuses des données. Il garantit ainsi que vos données restent intègres et protégées contre les erreurs matérielles ou logicielles.
-    
-2. **Regroupement du stockage** : ZFS vous permet de regrouper plusieurs dispositifs de stockage en une seule pool. Cette pool peut ensuite être divisée en ensembles de stockage virtuels qui peuvent être redimensionnés et gérés de manière dynamique selon les besoins.
-     
+1. **Intégrité des données** : ZFS utilise un mécanisme de vérification de somme de contrôle pour détecter et corriger les corruptions silencieuses des données. Il garantit ainsi que vos données restent intègres et protégées contre les erreurs matérielles ou logicielles.
+
+2. **Regroupement du stockage** : ZFS vous permet de regrouper plusieurs dispositifs de stockage en une seule pool. Cette pool peut ensuite être divisée en ensembles de stockage virtuels qui peuvent être redimensionnés et gérés de manière dynamique selon les besoins.     
 3. **Snapshots basés sur la copie sur écriture** : ZFS propose une fonctionnalité puissante d'instantanés qui vous permet de créer des copies de votre système de fichiers à un instant précis. Ces instantanés sont légers, efficaces en termes d'espace et peuvent être créés quasi-instantanément.
 
 4. **Compression des données** : ZFS prend en charge la compression des données en temps réel, ce qui permet de réduire l'espace de stockage utilisé. Attention à prévoir un CPU un peu plus costaud...
@@ -64,9 +67,22 @@ ZFS présente de nombreux avantages par rapport aux systèmes de fichiers tradit
 5. **Déduplication** : En utilisant des algorithmes de hachage comme SHA-256, le système de fichiers est capable de ne stocker qu'une version d'un même segment de données
 
 6. Fonctionnalités similaires à RAID : ZFS intègre des fonctionnalités similaires à celles des systèmes RAID. Il propose différents niveaux de redondance des données, tels que la mise en miroir et les RAID basés sur la parité, pour protéger contre les défaillances de disque et assurer la disponibilité des données.
+### Cons
 
-En résumé, ZFS est un système de fichiers avancé qui combine des fonctionnalités de gestion des données, d'intégrité et de fiabilité pour répondre aux besoins des environnements de stockage modernes dans la lignée des infrastructures hyperconvergés et "software-defined". Cette solution s'adresse à des installations haut de gamme avec plus de 10 disques installés (voir cartes SAS).
+1.  On ne peut pas convertir “à chaud” un vdev existant d’un type RAIDZ vers un autre type (par ex. RAIDZ1 → RAIDZ2) : la géométrie (nombre de disques, parité…) est fixée lors de la création initiale.
+2. Si on veut “augmenter” la capacité en remplaçant les disques existants par des disques de plus grande taille, ZFS le permet — mais il faut remplacer tous les disques un à un, attendre le resynchronisation (re-“resilvering”) pour chacun, **PUIS** la pool pourra utiliser la taille augmentée.
+3. Concernant la suppression d’un disque d’un vdev RAIDZ (réduire le nombre de disques ou retirer un disque tout en gardant le pool) : c’est effectivement une opération difficile — ce n’est pas supporté en tant que fonction standard.
+4. Enfin, l’idée qu’avec RAIDZ, les données sont distribuées / “stripées + parité” sur l’ensemble des disques implique qu'il n'est pas possible d'éteindre un disque individuellement (spin-down) sans impacter l’intégrité globale
+5. Le passage d’un niveau de parité supérieur (par exemple RAIDZ1 → RAIDZ2) n’est toujours pas possible “in place". Il faut recréer un nouveau vdev/pool, migrer les données, ce qui requiert souvent un backup externe ou un espace temporaire suffisant. Voir [ce lien](https://mtlynch.io/raidz1-to-raidz2/)
 
+### RAID-Z Expension de ZFS 
+
+ L’expansion des grappes ZFS est en développement depuis plus de dix ans et financé depuis 2017 et ce n’est toujours pas parfait. La mise en oeuvre de cette fonctionnalité n'est officiel que depuis la sortie de OpenZFS 2.3 (début 2025) (voir [cet article](https://freebsdfoundation.org/blog/openzfs-raid-z-expansion-a-new-era-in-storage-flexibility/)). C'est donc une fonctionnalité récemment implémenté et à prendre avec des pincettes. Le système reste très limité dans ce qu’on peut ajouter et dans la manière dont on peut le faire. On ne peut toujours pas ajouter un disque et faire évoluer un pool de RAIDZ1 vers RAIDZ2. On ne peut pas non plus ajouter un disque de plus grande capacité et utiliser l’espace supplémentaire tant que _tous_ les autres disques n’ont pas été remplacés et égalisés. Retirer un disque d’un pool reste également très difficile. On ne peut pas éteindre individuellement des disques, parce que chaque fichier est réparti en bandes sur l’ensemble des disques. Et il existe encore d’autres inconvénients qui rendent ZFS plus coûteux par téraoctet, à moins d’acheter dès le départ un gros pool de disques.
+### Conclusion
+
+En résumé, ZFS est un système de fichiers avancé qui combine des fonctionnalités de gestion des données, d'intégrité et de fiabilité pour répondre aux besoins des environnements de stockage modernes dans la lignée des infrastructures hyperconvergés et "software-defined".
+Cette solution s'adresse à des installations haut de gamme avec 4 à 20 disques installés. Il y a cependant des inconvénients reconnus des solutions ZFS / RAIDZ rendant l'expansion "progressive et souple" plus difficile que sur des systèmes RAID "add-as-you-go"
+ 
 ## JBOD -  le stockage de données non critiques
 
 "Just a Bunch Of Disks", c'est un terme utilisé pour décrire une configuration de stockage dans laquelle plusieurs disques durs ou SSD sont regroupés sans utiliser de technologie de redondance ou de parité de données.

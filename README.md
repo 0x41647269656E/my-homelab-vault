@@ -102,10 +102,11 @@ my-homelab-vault/
 
 ## 📚 Ressources externes
 
--   https://obsidian.md
--   https://podman.io
--   https://syncthing.net
--   https://paperless-ngx.readthedocs.io
+- https://obsidian.md
+- https://podman.io
+- https://syncthing.net
+- https://paperless-ngx.readthedocs.io
+- https://github.com/awesome-selfhosted/awesome-selfhosted
 
 ## 🧾 Licence
 
