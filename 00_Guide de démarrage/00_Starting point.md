@@ -2,8 +2,8 @@
 title: Quel homelab pour quel usage ?
 author: "0x41647269656E"
 series: Guide de démarrage
+reading-time: 10min
 ---
-
 # Le pourquoi du comment
 
 Après plusieurs années à utiliser des services "cloud", je me lance dans l'auto-hébergement d'applications. Vous trouverez ci-dessous un dossier complet de mes recherches. Les choix que j'ai évalué, les choses qui ont marché mais aussi les choses qui m'ont paru trop complexe à implémenter, les échecs et les ratés.
@@ -24,3 +24,7 @@ Plusieurs raisons à ça :
 - La reprise de contrôle technique : Utiliser un service sans en connaitre son fonctionnement interne me dérange. L'utilisation d'un logiciel propriétaire est donc à éviter. Vive le libre. Vive l'open source. ;)
 
 - L'envie d'apprendre : faire des recherches, apprendre et découvrir une nouvelle communauté me fait envie. Héberger soi-même des services est un projet à part entière duquel je tirerai forcément de nouvelles connaissances.
+
+# Glossaire
+
+Nous parlons dans ce guide de NAS et de Homelabs. Je distingue les deux pour des cas d'usages différents. A mon sens, un homelab est un environnement dans lequel on héberge des services que l'on souhaite mettre à l'épreuve (lab) et qui sert à héberger des services. Un NAS quand a lui sert à héberger des services simples et bas niveau de partage de fichiers et d'applications légères.
