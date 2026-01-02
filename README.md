@@ -38,10 +38,7 @@ Pour l’utiliser :
 
 ## 📂 Structure du dépôt
 
-├── README.md
-└── LICENSE
-
-my-homelab-vault/
+│ my-homelab-vault/
 │
 ├── .obsidian/                 # Configuration propre à Obsidian (thème, plugins, workspace…)
 │
@@ -91,7 +88,6 @@ my-homelab-vault/
 │
 ├── README.md                  # Présentation du projet
 └── LICENSE
-
 
 ## 🛠️ Objectifs
 
