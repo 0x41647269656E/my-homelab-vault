@@ -2,7 +2,7 @@
 
 ![Banner](https://raw.githubusercontent.com/0x41647269656E/my-homelab-vault/refs/heads/main/banner.png)
 
-Bienvenue dans mon dépot **Obsidian Vault pour Homelab** !\
+Bienvenue dans mon dépot **Obsidian Vault pour Homelab** !
 
 Dans ce dépôt, je conserve et documente toute mon infrastructure personnelle homelab : de la création, le choix des composants de la machine, l'installation des systèmes jusqu'à l'exploitation des services.
 
@@ -38,7 +38,7 @@ Pour l’utiliser :
 
 ## 📂 Structure du dépôt
 
-├── README.md\
+├── README.md
 └── LICENSE
 
 my-homelab-vault/
