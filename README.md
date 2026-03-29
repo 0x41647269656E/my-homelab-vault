@@ -37,7 +37,7 @@ Pour l’utiliser :
 | Paperless-ngx | Gestion numérique des documents. |
 
 ## 📂 Structure du dépôt
-
+``` 
 │ my-homelab-vault/
 │
 ├── .obsidian/                 # Configuration propre à Obsidian (thème, plugins, workspace…)
@@ -88,6 +88,7 @@ Pour l’utiliser :
 │
 ├── README.md                  # Présentation du projet
 └── LICENSE
+```
 
 ## 🛠️ Objectifs
 
