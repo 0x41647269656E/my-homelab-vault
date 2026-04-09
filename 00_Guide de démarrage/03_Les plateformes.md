@@ -136,9 +136,43 @@ Dans son édition communautaire, il supporte plusieurs types de stockage : **ZFS
 Proxmox est une solution viable dans le temps et basé sur des technologies récentes et maintenues. C'est une très bonne base pour un homelab possédant une base matériel solide (8 vCPUs, 16 go de ram mini) en stand-alone ou sur des configurations plus petites en cluster. En deça de ces ressources, l'overhead engendré par la multiplication des VMs (même deux..) sera trop important en comparaison d'une architecture où les applications s'exécutent sur un seul et même OS avec des conteneurs légers.
 
 Proxmox ne propose pas encore de mécanisme permettant d'héberger des conteneurs Docker, Podman ou utilisant le standard OCI et le GPU passthrough ne fonctionne pas à l'aide des conteneurs LXC.
+
+# VMWare ESXi
+
+VMware ESXi (racheté par _Broadcom_ en novembre 2023) est un hyperviseur bare-metal basé sur un microkernel propriétaire. Il s’installe directement sur le matériel et fournit une couche de virtualisation **très** optimisée, notamment via le scheduler CPU et la gestion avancée de la mémoire (ballooning, TPS historiquement).
+
+Historiquement, cet hyperviseur est souvent apprécié des ingénieurs DevOps du fait de la proximité avec les environnements qu'ils observent en entreprise. Beaucoup d'entreprises tirent parti des solutions VMWare pour la virtualisation.
+
+Historiquement, ESXi "Free" possède les limites suivantes :
+- Hyperviseur complet, limité à une quantité max de mémoire par VM et un nombre de sockets
+- Pas de clustering (DRS/HA)
+- Pas de vMotion
+- pas de vCenter
+- Limites d'APIs
+- Backups limités (pas de backups à chaud).
+
+ESXi repose sur une _Hardware Compatibility List_ (HCL) stricte. Les cartes réseau Realtek sont souvent non supportées sans "hacks", les cartes réseau Intel sont fortement recommandées. L'usage d'une carte RAID hardware recommandé (LSI, Dell PERC, etc.) et les CPU anciens sont parfois blacklistés sur les versions récentes. Attention donc à bien vérifier la liste de compatibilité avant de choisir cet hyperviseur.
+
+En pratique, l’hyperviseur reste techniquement très solide et offre d’excellentes performances. Cependant, la stratégie actuelle de Broadcom introduit une incertitude non négligeable quant à la pérennité de l’offre gratuite. Des restrictions supplémentaires, qu’elles concernent les fonctionnalités, l’accès aux API ou les conditions d’utilisation pourront apparaître au fil des mises à jour, sans réelle garantie de stabilité long terme.
+
+Dans ce contexte, la version gratuite conserve un intérêt pour des environnements de test, de découverte ou de formation ponctuelle. Elle permet de se familiariser avec l’écosystème VMware et de valider certains scénarios techniques. En revanche, pour un homelab conçu comme une infrastructure de services durables et fiables dans le temps, le choix devient plus discutable. L’absence de visibilité sur l’évolution du produit, combinée à des limitations croissantes, peut rapidement devenir bloquante, notamment pour les besoins en automatisation, en sauvegarde ou en montée en charge (augmentation de la ram, changement de matériel, support des cartes raid,  .
+
+Ainsi, même si la base technologique reste excellente, l’environnement global n’offre plus les garanties nécessaires pour en faire un socle serein sur le long terme dans un cadre homelab personnel.
 ## OpenMediaVault
 
-TODO : Tester la distrib :)
+OpenMediaVault est une distribution Linux spécialisée dans le stockage réseau (NAS), basée sur Debian, née au début des années 2010 après une scission avec le projet FreeNAS. L’objectif du projet était de proposer une solution simple, légère et extensible pour transformer un serveur ou même une machine modeste en NAS administrable via une interface web. Le cœur du système repose sur Debian et son écosystème de paquets, ce qui permet de bénéficier d’une base stable et bien maintenue, tout en ajoutant 'on-top' une couche d’administration propre à OMV.
+
+Le projet est toujours actif aujourd’hui. Les versions récentes continuent de suivre les évolutions de Debian, avec par exemple OMV v8 basée sur Debian 13 publiée fin 2025 et régulièrement mise à jour en 2026. La maintenance continue, même si le développement reste relativement centralisé autour d’un nombre limité de contributeurs, ce qui donne une impression de rythme plus lent que d’autres solutions plus industrialisées.
+
+Sur le plan technique, OpenMediaVault n’est pas un système de stockage “from scratch” comme peuvent l’être certaines solutions basées sur ZFS. Il agit plutôt comme une surcouche d’orchestration au-dessus de services Linux standards. Le stockage repose sur des briques classiques comme mdadm (/!\) pour le RAID logiciel, LVM éventuellement, et des systèmes de fichiers comme ext4, XFS ou Btrfs, avec ZFS disponible via plugin. Les services réseau (SMB, NFS, FTP, rsync, iSCSI) sont eux aussi des implémentations standards configurées automatiquement via l’interface web.
+
+Un point important de son architecture est son système de plugins, qui permet d’étendre les fonctionnalités sans alourdir le cœur. Cela inclut notamment l’ajout de Docker via des extensions communautaires, ce qui transforme souvent OMV en plateforme hybride NAS + services applicatifs. Ce modèle modulaire est simple mais peut aussi devenir une faiblesse, car beaucoup de fonctionnalités avancées reposent sur des plugins externes parfois moins bien maintenus, ce à quoi on ajoute la problématique de démarrage des conteneurs root sous docker.
+
+En termes de configuration minimale, OMV est très léger. Il peut fonctionner avec environ 1 Go de RAM et quelques gigaoctets pour le système, tant que le matériel est compatible avec Debian. Cela le rend particulièrement adapté aux machines anciennes, aux mini-PC ou aux plateformes ARM comme les Raspberry Pi.
+
+Ses limites apparaissent surtout dès que l’on cherche à construire une infrastructure avancée avec de nombreux services hébergés. Contrairement à des solutions comme TrueNAS ou même certaines stacks modernes, OMV ne propose pas nativement des mécanismes avancés de gestion du stockage comme le ZFS intégré, la déduplication ou une gestion fine de la haute disponibilité. L’approche est plus simple et moins intégrée, ce qui peut conduire à des configurations hétérogènes ou fragiles si l’on empile trop de plugins (surtout si développés par la communauté).
+
+En pratique, OpenMediaVault reste une bonne plateforme pour des cas d’usage simples : un NAS domestique, un serveur de fichiers, sauvegarde réseau. Sa légèreté et sa flexibilité en font un excellent choix pour recycler du matériel et construire un cas d'usage orienté stockage sans complexité excessive. En revanche, pour des besoins avancés (services socle + hébergement d'applications multiples), il montre rapidement ses limites et demande beaucoup de bricolage avec des plugins communautaires pour arriver à nos fins.
 # Conclusion
 
 Ces projets présentées sous la forme de plateformes NAS / Homelab, proposent des solutions "tout-en-un" et un écosystème à mettre en oeuvre pour déployer rapidement et de manière plus ou moins sécurisée des services type vidéothèque, partages dropbox, Google Drive et compagnie. Chaque solution s'avère adaptée dans un cas d'usage précis. On va essayer dans cette conclusion de lister les cas et les dimensionnements dans lesquelles une solution est adaptée par rapport aux autres.
