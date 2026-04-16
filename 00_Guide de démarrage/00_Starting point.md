@@ -4,9 +4,26 @@ author: "0x41647269656E"
 series: Guide de démarrage
 reading-time: 10min
 ---
-# Le pourquoi du comment
+# Bienvenue !
 
-Après plusieurs années à utiliser des services "cloud", je me lance dans l'auto-hébergement d'applications. Vous trouverez ci-dessous un dossier complet de mes recherches. Les choix que j'ai évalué, les choses qui ont marché mais aussi les choses qui m'ont paru trop complexe à implémenter, les échecs et les ratés.
+Bienvenue dans ce guide de démarrage de ce projet de documentation consacré aux homelabs !
+
+Ce guide se veut être une ressource pour celles et ceux qui, comme moi, ont un jour voulu héberger des services à la maison et reprendre le contrôle de leurs données.
+
+Ce guide présente les différentes solutions techniques que j’ai étudiées, ainsi que les choix, parfois clivants, que j’ai faits. Ce guide n'a pas vocation à être une référence absolue en matière de homelabs mais simplement un retour d'expérience des solutions que j'ai évalué et mis en oeuvre.
+
+Dans cette démarche, n’hésitez pas à consulter d’autres sources, à expérimenter différents outils et à explorer d’autres approches et pourquoi pas contribuer à ce guide ! Je partage ici ma démarche personnelle, les choix que j'ai réalisé, les outils que j'ai intégré. C'est là toute la richesse des homelabs, chacun se construit le sien avec ses besoins et ses contraintes.
+
+Au sein de ce guide, j’essaie de mettre en avant les bonnes questions à se poser afin d’éviter certains écueils, qu’ils soient financiers, matériels, techniques ou liés à la sécurité, et de permettre à chacun d’aborder son projet personnel avec une vision claire, en anticipant les dépenses et en évitant les mauvaises surprises sur des aspects auxquels on ne pense pas toujours au départ.
+
+# Le pourquoi du comment d'un homelab
+
+Après plusieurs années à utiliser des services "cloud", je me lance en 2023 dans l'auto-hébergement d'applications. Vous trouverez ci-dessous un dossier complet de mes recherches. Les choix que j'ai évalué, les choses qui ont marché mais aussi les choses qui m'ont paru trop complexe à implémenter, les échecs et les ratés.
+
+Il était important pour moi de partager les échecs rencontrés en cours de route. En 2025, j’ai notamment perdu près de 40 To de données à la suite d’un problème d’alignement de partitions et d'une carte mère défectueuse.
+
+Cet incident m’a rappelé à quel point certains aspects de design d'infrastructure, parfois mal compris, peuvent avoir un impact critique sur l’intégrité du projet. C’est aussi pour cela que ce guide ne se limite pas aux réussites : il met en lumière les pièges concrets auxquels on peut être confronté, afin de vous aider vous à les anticiper et les éviter.
+
 # Quel homelab pour quel usage ?
 
 *A quoi ça sert d'héberger soi-même ses applications ?*
