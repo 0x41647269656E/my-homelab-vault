@@ -89,7 +89,7 @@ Attention donc quand vous branchez votre homelab a ne pas brancher des multipris
 
 **Un incendie n'arrive pas qu'aux autres.**
 
-## UPS / Onduleur : indispensable dans un rack ?
+## UPS / Onduleur : indispensable dans un homelab en rack ?
 
 Pour un homelab, un UPS (onduleur) apporte une sécurité très importante :
 1. Protection contre les coupures courtes (micro-coupures imperceptibles mais destructrices pour les SSD et systèmes de fichiers).
@@ -98,8 +98,15 @@ Pour un homelab, un UPS (onduleur) apporte une sécurité très importante :
 4. Filtrage des surtensions complémentaires au parafoudre.
 5. Continuité réseau pour les routeurs, box Internet, switchs PoE.
 
-Les serveurs Proxmox/TrueNAS/Kubernetes peuvent communiquer avec l’onduleur via NUT ou APC UPS Daemon, permettant un arrêt automatique si la coupure électrique dure plus de N minutes.
+Les serveurs Proxmox/TrueNAS/Kubernetes peuvent communiquer avec l’onduleur via NUT ou APC UPS Daemon, permettant un arrêt automatique si la coupure électrique dure plus de N minutes (durée en fonction de la gamme de l'équipement.).
 ## Conclusion
 
-Un homelab fiable passe aussi par une installation électrique sécurisée.  
-En respectant la norme NF C 15-100, en contrôlant les charges sur une prise, en utilisant des multiprises certifiées, en intégrant un parafoudre et un onduleur adapté à la charge, on réduit drastiquement les risques d’incendie, de perte matérielle ou de corruption de données. Un petit investissement dans la qualité électrique garantit une infrastructure stable, durable et résiliante, indispensable pour un homelab utilisé au quotidien.
+Un homelab fiable passe aussi par une installation électrique sécurisée.
+Pour pouvoir héberger avec sérénité ses services et ses données, il apparait indispensable de s'informer des normes et d'effectuer les actions suivantes : 
+- S'assurer du respect de la norme C 15-100 (câbles, branchements, disjoncteur, dimensionnement...)
+	- Si besoin, au travers d'un expert qui vient contrôler l'installation à domicile.
+- Contrôler la charge appliquée sur la/les prise(s) utilisée(s)
+- Utiliser des multiprises certifiées aux normes CE qui intègrent un [parafoudre](https://amzn.eu/d/061tv7ye)
+- Investir dans un onduleur adapté à la charge si vous souhaitez protéger des données critiques
+
+Ces mesures réduisent drastiquement les risques d’incendie, de perte matérielle ou de corruption de données. C'est malin en démarrage d'un projet de prévoir également dans le budget un petit investissement dans la remise en conformité électrique.
