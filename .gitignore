@@ -1,1 +1,35 @@
-/.stfolder
+# =========================
+# Windows
+# =========================
+desktop.ini
+Thumbs.db
+
+# =========================
+# Syncthing / temp folders
+# =========================
+.stfolder.removed-*/
+.stfolder
+
+# =========================
+# Obsidian - local UI state
+# (à ne pas versionner)
+# =========================
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/app.json
+
+# =========================
+# Obsidian plugins settings
+# (locaux / souvent bruit)
+# =========================
+.obsidian/community-plugins.json
+.obsidian/core-plugins.json
+.obsidian/plugins/*/data.json
+
+# =========================
+# Logs / temp
+# =========================
+*.log
+*.tmp
+*.bak
+.DS_Store
