@@ -1,0 +1,53 @@
+---
+# Utilisateur non-root créé par le playbook
+admin_user: "podman"
+admin_groups: "sudo"
+
+# SSH
+ssh_port: 22
+ssh_allowed_users: "{{ admin_user }}"
+
+# UFW : ports à ouvrir
+ufw_allowed_ports:
+  - { port: "{{ ssh_port }}", proto: "tcp", comment: "SSH" }
+
+# Podman
+podman_user: "{{ admin_user }}"
+
+# Paquets à supprimer (services inutiles sur Ubuntu Server minimal)
+packages_to_remove:
+  - snapd
+  - apport
+  - whoopsie
+  - avahi-daemon
+  - cups
+  - cups-browsed
+  - rpcbind
+  - nfs-common
+  - telnet
+
+# Paramètres sysctl de durcissement
+sysctl_hardening:
+  # Protection contre le spoofing et le routage source
+  net.ipv4.conf.all.rp_filter: 1
+  net.ipv4.conf.default.rp_filter: 1
+  net.ipv4.conf.all.accept_source_route: 0
+  net.ipv6.conf.all.accept_source_route: 0
+  # Désactiver le routage IP
+  net.ipv4.ip_forward: 0
+  # Ignorer les broadcasts ICMP (smurf attack)
+  net.ipv4.icmp_echo_ignore_broadcasts: 1
+  # Protéger contre les redirects ICMP malveillants
+  net.ipv4.conf.all.accept_redirects: 0
+  net.ipv4.conf.default.accept_redirects: 0
+  net.ipv6.conf.all.accept_redirects: 0
+  net.ipv6.conf.default.accept_redirects: 0
+  net.ipv4.conf.all.send_redirects: 0
+  # Protection SYN flood
+  net.ipv4.tcp_syncookies: 1
+  # Durcissement mémoire
+  kernel.randomize_va_space: 2
+  kernel.dmesg_restrict: 1
+  kernel.kptr_restrict: 2
+  # Désactiver les core dumps SUID
+  fs.suid_dumpable: 0

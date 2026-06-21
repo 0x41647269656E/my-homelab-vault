@@ -1,0 +1,363 @@
+---
+# Playbook : Hardening Ubuntu Server 24.04 + Installation Podman rootless
+# Usage : ansible-playbook -i inventory.ini site.yml -K
+# Prérequis : accès SSH par clé sur l'utilisateur cible, sudo disponible
+
+- name: Ubuntu Server — Hardening & Podman
+  hosts: ubuntu_servers
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Vérifier qu'on est sur Ubuntu 22.04+ ou 24.04
+      ansible.builtin.assert:
+        that:
+          - ansible_distribution == "Ubuntu"
+          - ansible_distribution_major_version | int >= 22
+        fail_msg: "Ce playbook cible Ubuntu 22.04+ uniquement."
+
+  # ─────────────────────────────────────────────
+  # 1. MISE À JOUR SYSTÈME
+  # ─────────────────────────────────────────────
+  tasks:
+    - name: "[UPDATE] Mettre à jour le cache APT"
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: "[UPDATE] Mettre à jour tous les paquets"
+      ansible.builtin.apt:
+        upgrade: full
+        autoremove: true
+        autoclean: true
+
+  # ─────────────────────────────────────────────
+  # 2. SUPPRESSION DES SERVICES ET PAQUETS INUTILES
+  # ─────────────────────────────────────────────
+    - name: "[CLEANUP] Arrêter et désactiver snapd"
+      ansible.builtin.systemd:
+        name: snapd
+        state: stopped
+        enabled: false
+      ignore_errors: true
+
+    - name: "[CLEANUP] Supprimer les paquets inutiles"
+      ansible.builtin.apt:
+        name: "{{ packages_to_remove }}"
+        state: absent
+        purge: true
+        autoremove: true
+
+    - name: "[CLEANUP] Supprimer les répertoires snap résiduels"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /snap
+        - /var/snap
+        - /var/lib/snapd
+        - /root/snap
+
+    - name: "[CLEANUP] Désactiver le remontage automatique de snapd via apt"
+      ansible.builtin.copy:
+        dest: /etc/apt/preferences.d/no-snapd
+        content: |
+          Package: snapd
+          Pin: release a=*
+          Pin-Priority: -10
+        mode: "0644"
+
+  # ─────────────────────────────────────────────
+  # 3. CRÉATION DE L'UTILISATEUR ADMIN
+  # ─────────────────────────────────────────────
+    - name: "[USER] Créer l'utilisateur {{ admin_user }}"
+      ansible.builtin.user:
+        name: "{{ admin_user }}"
+        groups: "{{ admin_groups }}"
+        shell: /bin/bash
+        create_home: true
+        state: present
+
+    - name: "[USER] Autoriser sudo sans mot de passe pour {{ admin_user }}"
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/{{ admin_user }}"
+        content: "{{ admin_user }} ALL=(ALL) NOPASSWD: ALL\n"
+        mode: "0440"
+        validate: "visudo -cf %s"
+
+    - name: "[USER] Déployer la clé SSH autorisée pour {{ admin_user }}"
+      ansible.posix.authorized_key:
+        user: "{{ admin_user }}"
+        key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+        state: present
+
+  # ─────────────────────────────────────────────
+  # 4. DURCISSEMENT SSH
+  # ─────────────────────────────────────────────
+    - name: "[SSH] Déployer la configuration SSH durcie"
+      ansible.builtin.copy:
+        dest: /etc/ssh/sshd_config.d/99-hardening.conf
+        content: |
+          # Authentification
+          PermitRootLogin no
+          PasswordAuthentication no
+          PubkeyAuthentication yes
+          AuthenticationMethods publickey
+          PermitEmptyPasswords no
+
+          # Limitations
+          MaxAuthTries 3
+          LoginGraceTime 30
+          MaxSessions 3
+
+          # Désactiver les fonctionnalités non utilisées
+          X11Forwarding no
+          AllowAgentForwarding no
+          AllowTcpForwarding no
+          PermitUserEnvironment no
+          PrintMotd no
+
+          # Restrictions d'accès
+          AllowUsers {{ ssh_allowed_users }}
+
+          # Chiffrement : algorithmes modernes uniquement
+          KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org
+          Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+          MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com
+        mode: "0600"
+        validate: "sshd -t -f %s"
+      notify: Restart sshd
+
+  # ─────────────────────────────────────────────
+  # 5. PARE-FEU UFW
+  # ─────────────────────────────────────────────
+    - name: "[FIREWALL] Installer UFW"
+      ansible.builtin.apt:
+        name: ufw
+        state: present
+
+    - name: "[FIREWALL] Politique par défaut : tout refuser en entrée"
+      community.general.ufw:
+        default: deny
+        direction: incoming
+
+    - name: "[FIREWALL] Politique par défaut : tout autoriser en sortie"
+      community.general.ufw:
+        default: allow
+        direction: outgoing
+
+    - name: "[FIREWALL] Ouvrir les ports autorisés"
+      community.general.ufw:
+        rule: allow
+        port: "{{ item.port }}"
+        proto: "{{ item.proto }}"
+        comment: "{{ item.comment }}"
+      loop: "{{ ufw_allowed_ports }}"
+
+    - name: "[FIREWALL] Activer UFW"
+      community.general.ufw:
+        state: enabled
+
+  # ─────────────────────────────────────────────
+  # 6. FAIL2BAN
+  # ─────────────────────────────────────────────
+    - name: "[FAIL2BAN] Installer fail2ban"
+      ansible.builtin.apt:
+        name: fail2ban
+        state: present
+
+    - name: "[FAIL2BAN] Déployer la configuration jail.local"
+      ansible.builtin.copy:
+        dest: /etc/fail2ban/jail.local
+        content: |
+          [DEFAULT]
+          bantime  = 3600
+          findtime = 600
+          maxretry = 4
+          backend  = systemd
+
+          [sshd]
+          enabled  = true
+          port     = {{ ssh_port }}
+          maxretry = 3
+          bantime  = 7200
+        mode: "0644"
+      notify: Restart fail2ban
+
+    - name: "[FAIL2BAN] Activer et démarrer fail2ban"
+      ansible.builtin.systemd:
+        name: fail2ban
+        enabled: true
+        state: started
+
+  # ─────────────────────────────────────────────
+  # 7. DURCISSEMENT SYSCTL
+  # ─────────────────────────────────────────────
+    - name: "[SYSCTL] Appliquer les paramètres de durcissement noyau"
+      ansible.posix.sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        state: present
+        reload: true
+        sysctl_file: /etc/sysctl.d/99-hardening.conf
+      loop: "{{ sysctl_hardening | dict2items }}"
+
+  # ─────────────────────────────────────────────
+  # 8. MISES À JOUR AUTOMATIQUES DE SÉCURITÉ
+  # ─────────────────────────────────────────────
+    - name: "[AUTOUPDATE] Installer unattended-upgrades"
+      ansible.builtin.apt:
+        name:
+          - unattended-upgrades
+          - apt-listchanges
+        state: present
+
+    - name: "[AUTOUPDATE] Configurer unattended-upgrades (sécurité uniquement)"
+      ansible.builtin.copy:
+        dest: /etc/apt/apt.conf.d/50unattended-upgrades
+        content: |
+          Unattended-Upgrade::Allowed-Origins {
+              "${distro_id}:${distro_codename}-security";
+          };
+          Unattended-Upgrade::AutoFixInterruptedDpkg "true";
+          Unattended-Upgrade::MinimalSteps "true";
+          Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+          Unattended-Upgrade::Remove-New-Unused-Dependencies "true";
+          Unattended-Upgrade::Remove-Unused-Dependencies "true";
+          Unattended-Upgrade::Automatic-Reboot "false";
+        mode: "0644"
+
+    - name: "[AUTOUPDATE] Activer la vérification automatique"
+      ansible.builtin.copy:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        content: |
+          APT::Periodic::Update-Package-Lists "1";
+          APT::Periodic::Unattended-Upgrade "1";
+          APT::Periodic::AutocleanInterval "7";
+        mode: "0644"
+
+  # ─────────────────────────────────────────────
+  # 9. OUTILS DE DIAGNOSTIC
+  # ─────────────────────────────────────────────
+    - name: "[TOOLS] Installer les outils de base"
+      ansible.builtin.apt:
+        name:
+          - curl
+          - wget
+          - htop
+          - vim
+          - git
+          - rsync
+          - ca-certificates
+          - gnupg
+          - lsb-release
+          - net-tools
+          - iproute2
+          - tcpdump
+          - qemu-guest-agent
+        state: present
+
+    - name: "[TOOLS] Activer le QEMU guest agent"
+      ansible.builtin.systemd:
+        name: qemu-guest-agent
+        enabled: true
+        state: started
+
+  # ─────────────────────────────────────────────
+  # 10. INSTALLATION PODMAN (rootless)
+  # ─────────────────────────────────────────────
+    - name: "[PODMAN] Installer Podman depuis les dépôts Ubuntu"
+      ansible.builtin.apt:
+        name:
+          - podman
+          - containernetworking-plugins
+          - uidmap
+          - slirp4netns
+          - fuse-overlayfs
+          - buildah
+          - skopeo
+        state: present
+
+    - name: "[PODMAN] Configurer le sous-UID pour {{ podman_user }}"
+      ansible.builtin.lineinfile:
+        path: /etc/subuid
+        line: "{{ podman_user }}:100000:65536"
+        create: true
+        mode: "0644"
+
+    - name: "[PODMAN] Configurer le sous-GID pour {{ podman_user }}"
+      ansible.builtin.lineinfile:
+        path: /etc/subgid
+        line: "{{ podman_user }}:100000:65536"
+        create: true
+        mode: "0644"
+
+    - name: "[PODMAN] Activer le linger systemd pour {{ podman_user }} (services au boot)"
+      ansible.builtin.command:
+        cmd: "loginctl enable-linger {{ podman_user }}"
+      changed_when: false
+
+    - name: "[PODMAN] Créer le répertoire de configuration Podman pour {{ podman_user }}"
+      ansible.builtin.file:
+        path: "/home/{{ podman_user }}/.config/containers"
+        state: directory
+        owner: "{{ podman_user }}"
+        group: "{{ podman_user }}"
+        mode: "0750"
+
+    - name: "[PODMAN] Déployer registries.conf (Docker Hub + GHCR)"
+      ansible.builtin.copy:
+        dest: "/home/{{ podman_user }}/.config/containers/registries.conf"
+        owner: "{{ podman_user }}"
+        group: "{{ podman_user }}"
+        mode: "0644"
+        content: |
+          [[registry]]
+          location = "docker.io"
+
+          [[registry]]
+          location = "ghcr.io"
+
+          # Désactiver la recherche implicite sur des registres non qualifiés
+          unqualified-search-registries = ["docker.io"]
+
+    - name: "[PODMAN] Vérifier l'installation Podman (rootless)"
+      ansible.builtin.command:
+        cmd: "su - {{ podman_user }} -c 'podman info --format json'"
+      register: podman_info
+      changed_when: false
+
+    - name: "[PODMAN] Afficher la version Podman installée"
+      ansible.builtin.debug:
+        msg: "Podman installé : {{ (podman_info.stdout | from_json).version.Version }}"
+
+  # ─────────────────────────────────────────────
+  # 11. CRÉATION DU RÉPERTOIRE DE TRAVAIL CONTENEURS
+  # ─────────────────────────────────────────────
+    - name: "[PODMAN] Créer l'arborescence de travail pour les conteneurs"
+      ansible.builtin.file:
+        path: "/home/{{ podman_user }}/{{ item }}"
+        state: directory
+        owner: "{{ podman_user }}"
+        group: "{{ podman_user }}"
+        mode: "0750"
+      loop:
+        - containers
+        - containers/config
+        - containers/data
+        - containers/backups
+        - .config/systemd/user
+
+  # ─────────────────────────────────────────────
+  # HANDLERS
+  # ─────────────────────────────────────────────
+  handlers:
+    - name: Restart sshd
+      ansible.builtin.systemd:
+        name: sshd
+        state: restarted
+
+    - name: Restart fail2ban
+      ansible.builtin.systemd:
+        name: fail2ban
+        state: restarted
