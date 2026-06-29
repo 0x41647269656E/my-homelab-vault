@@ -7,6 +7,14 @@ tags:
   - raid
   - zfs
   - xfs
+  - mergerfs
+  - jbod
+  - ceph
+  - glusterfs
+reading-time: 30m
+date: 12-11-2025
+last_modified: 29-06-2026
+status: published
 ---
 Dans cet article, on s'intéresse à lister les solutions qui s'offrent à un tech-enthusiat pour monter à la maison un homelab.
 # Un point sur le stockage
