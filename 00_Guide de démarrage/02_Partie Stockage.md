@@ -1,7 +1,12 @@
 ---
-author: "0x41647269656E"
 title: Partie Stockage
-series: Guide de démarrage
+author: "0x41647269656E"
+series: "Guide de démarrage"
+tags:
+  - stockage
+  - raid
+  - zfs
+  - xfs
 ---
 Dans cet article, on s'intéresse à lister les solutions qui s'offrent à un tech-enthusiat pour monter à la maison un homelab.
 # Un point sur le stockage

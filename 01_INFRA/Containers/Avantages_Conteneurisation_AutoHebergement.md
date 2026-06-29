@@ -1,3 +1,18 @@
+---
+title: "Les avantages de la conteneurisation pour l’auto-hébergement"
+author: "0x41647269656E"
+series: "Guide de démarrage"
+tags:
+  - conteneurs
+  - docker
+  - podman
+  - auto-hébergement
+  - isolation
+reading-time: 15m
+date: 31-05-2026
+last_modified: 31-05-2026
+status: published
+---
 # Les avantages de la conteneurisation pour l’auto-hébergement
 
 > [!info] Objectif  

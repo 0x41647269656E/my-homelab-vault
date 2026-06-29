@@ -1,7 +1,23 @@
+---
+title: "Workflow de téléchargement de films et séries"
+author: "0x41647269656E"
+series: "Administration"
+tags:
+  - media
+  - jellyfin
+  - radarr
+  - sonarr
+  - workflow
+  - automatisation
+reading-time: 15m
+date: 31-05-2026
+last_modified: 31-05-2026
+status: published
+---
 # 🎬 Workflow de gestion média personnel (Films & Séries)
 
 > Oui, je télécharge exclusivement des œuvres **libres de droit**.  
-> Certaines ont juste eu la gentillesse de sortir en Blu-ray 4K HDR avant d’entrer dans le domaine public.
+> Certaines ont juste eu la gentillesse de sortir en Blu-ray 4K HDR 10 avant d’entrer dans le domaine public.
 
 ---
 

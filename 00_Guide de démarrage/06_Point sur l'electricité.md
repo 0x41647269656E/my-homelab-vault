@@ -1,9 +1,16 @@
 ---
-author: "0x41647269656E"
 title: Point sur l'electricité
-series: Guide de démarrage
+author: "0x41647269656E"
+series: "Guide de démarrage"
+tags:
+  - électricité
+  - sécurité
+  - onduleur
+  - norme-c15-100
 reading-time: 15m
 date: 22-11-2025
+last_modified: 22-04-2026
+status: published
 ---
 # Sécurité électrique dans un homelab : normes, limites, protections et bonnes pratiques
 

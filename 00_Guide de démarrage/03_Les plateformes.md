@@ -1,7 +1,7 @@
 ---
 title: Les plateformes
 author: "0x41647269656E"
-series: Guide de démarrage
+series: "Guide de démarrage"
 tags:
   - freenas
   - truenas
@@ -11,7 +11,9 @@ tags:
   - unraid
   - proxmox
 date: 25-11-2025
-reading-time: 45min
+last_modified: 09-04-2026
+reading-time: 1h
+status: published
 ---
 # Les OS spécialisés
 

@@ -1,3 +1,20 @@
+---
+title: Gestion des accès distants
+author: "0x41647269656E"
+series: "Guide de démarrage"
+tags:
+  - vpn
+  - wireguard
+  - openvpn
+  - zero-trust
+  - tailscale
+  - headscale
+  - tunnel
+reading-time: 15m
+date: 06-12-2025
+last_modified: 06-12-2025
+status: published
+---
 L’accès distant sécurisé est un enjeu central dans un homelab comme dans une petite infrastructure. Les solutions disponibles sur le marché sont nombreuses et reposent sur des philosophies très différentes : VPN traditionnels, réseaux overlay, Zero Trust, accès proxyfés, tunnels chiffrés point-à-point…
 
 Voici une comparaison claire des principaux outils utilisés aujourd’hui.

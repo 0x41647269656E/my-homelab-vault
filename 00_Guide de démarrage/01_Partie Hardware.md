@@ -1,7 +1,16 @@
 ---
-author: "0x41647269656E"
 title: Partie Hardware
-series: Guide de démarrage
+author: "0x41647269656E"
+series: "Guide de démarrage"
+tags:
+  - hardware
+  - serveur
+  - raspberry-pi
+  - nas
+reading-time: 15m
+date: 12-11-2025
+last_modified: 22-11-2025
+status: published
 ---
 Dans cet article, on s'intéresse à lister les solutions qui s'offrent à un tech-enthusiat pour monter à la maison un homelab.
 # Solutions matérielles

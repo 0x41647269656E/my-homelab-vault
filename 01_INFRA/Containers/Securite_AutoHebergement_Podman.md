@@ -1,3 +1,18 @@
+---
+title: "Sécurité et auto-hébergement avec Podman"
+author: "0x41647269656E"
+series: "Hardening"
+tags:
+  - podman
+  - sécurité
+  - conteneurs
+  - rootless
+  - auto-hébergement
+reading-time: 20m
+date: 31-05-2026
+last_modified: 31-05-2026
+status: published
+---
 # Sécurité et Auto-Hébergement avec Podman
 
 ## Introduction

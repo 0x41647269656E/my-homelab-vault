@@ -1,11 +1,13 @@
 ---
-author: "0x41647269656E"
-series: Guide de démarrage
 title: Security
+author: "0x41647269656E"
+series: "Guide de démarrage"
 tags:
   - security
-reading-time: 30min
-date: 21-11-2025
+reading-time: 30m
+date: 18-11-2025
+last_modified: 25-11-2025
+status: published
 ---
 # La sécurité dans un homelab
 

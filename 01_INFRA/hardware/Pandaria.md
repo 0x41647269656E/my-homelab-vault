@@ -1,3 +1,17 @@
+---
+title: "Pandaria — fiche technique"
+author: "0x41647269656E"
+series: "Infrastructure"
+tags:
+  - hardware
+  - serveur
+  - nas
+  - pandaria
+reading-time: 10m
+date: 31-05-2026
+last_modified: 31-05-2026
+status: published
+---
 # 🖥️ Présentation Machine Pandaria
 
 ˋPandariaˋ est un serveur de stockage de données. Il contient la couche de stockage "disques durs" de mon homelab. Naturellement, sachant qu'il possède les disques, j'ai placé le serveur multimédia Jellyfin dessus.

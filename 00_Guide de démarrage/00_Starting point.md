@@ -1,8 +1,14 @@
 ---
 title: Quel homelab pour quel usage ?
 author: "0x41647269656E"
-series: Guide de démarrage
-reading-time: 10min
+series: "Guide de démarrage"
+tags:
+  - homelab
+  - démarrage
+reading-time: 10m
+date: 12-11-2025
+last_modified: 31-05-2026
+status: published
 ---
 # Bienvenue !
 
