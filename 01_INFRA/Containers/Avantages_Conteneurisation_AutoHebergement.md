@@ -22,11 +22,11 @@ status: published
 
 ## Introduction
 
-Administrer plusieurs applications sur un même serveur peut rapidement devenir complexe. Dans un environnement professionnel, nous avons pour habitude de dédier une machine à un cas d'usage et d'user de la virtualisation pour la séparation entre les environnements. Dans le cadre d'un homelab et devant la multitude d'applications qu'un utilisateur est amené à installer, cette répartition "une appli = une vm n'est pas envisageable. L'OS de chaque VM consomme des ressources CPU/RAM/DISK pour l'ordonnancement et processus systèmes...
+Administrer plusieurs applications sur un même serveur peut rapidement devenir complexe. Dans un environnement professionnel, nous avons pour habitude de dédier une machine à un cas d'usage et d'user de la virtualisation pour la séparation entre les environnements. Dans le cadre d'un homelab et devant la multitude d'applications qu'un utilisateur est amené à installer, cette répartition "une appli = une vm" n'est pas envisageable. L'OS de chaque VM consommant des ressources CPU/RAM/DISK pour l'ordonnancement et processus systèmes...
 
 A l'inverse, installer toutes les applications sur une seule machine (OS hôte ou VM) engendre :  
 
-- conflits de dépendances
+- des conflits de dépendances
 - mises à jour risquées
 - difficulté à revenir en arrière
 - manque d’isolation entre services
@@ -34,7 +34,7 @@ A l'inverse, installer toutes les applications sur une seule machine (OS hôte o
 
 C’est précisément ce que la **conteneurisation** vient résoudre.
 
-Grâce à des outils comme **Podman**, **Docker** ou **LXC**, il est possible de lancer des applications isolées, reproductibles et faciles à maintenir sur un seul environnement hôte.
+Grâce à des outils comme **Podman**, **Docker** ou **LXC**, il est possible de lancer des applications isolées, reproductibles et faciles à maintenir et mettre à jour sur un seul environnement hôte.
 
 ## Qu’est-ce que la conteneurisation ?
 
@@ -45,12 +45,7 @@ Un conteneur est un environnement léger qui embarque :
 - sa configuration ;
 - les bibliothèques nécessaires à son exécution.
 
-Contrairement à une machine virtuelle, un conteneur partage le noyau du système hôte, ce qui le rend :
-
-- plus rapide à lancer ;
-- moins gourmand en ressources ;
-- plus simple à déplacer ;
-- idéal pour les petits serveurs et homelabs.
+Contrairement à une machine virtuelle, un conteneur partage le noyau du système hôte, ce qui le rend plus rapide à lancer, moins gourmand en ressources et plus simple à déplacer. Autant de qualités qui en font une solution idéale pour les petits serveurs et homelabs.
 
 > [!example] Exemple  
 > Un serveur peut faire tourner simultanément :
@@ -70,7 +65,7 @@ Contrairement à une machine virtuelle, un conteneur partage le noyau du systèm
 Installer un service complexe manuellement demande souvent :
 
 - plusieurs services "backend";
-- des dépendances spécifiques (librairies, exécutables) ;
+- des dépendances et prérequis système spécifiques (librairies, exécutables, versions) ;
 - une configuration système (fichiers de configuration) ;
 - la définition de droits particuliers (et parfois des users spécifiques).
 
