@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" font-family="Segoe UI, Arial, sans-serif">
+  <rect x="0" y="0" width="760" height="370" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="30" y="42" font-size="17" font-weight="bold" fill="#0f172a">Le code couleur WD et les gammes équivalentes</text>
+
+  <!-- En-têtes -->
+  <g font-size="13" font-weight="bold" fill="#475569">
+    <text x="40" y="80">Usage</text>
+    <text x="240" y="80">Western Digital</text>
+    <text x="440" y="80">Seagate</text>
+    <text x="610" y="80">Toshiba</text>
+  </g>
+  <line x1="30" y1="90" x2="730" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <!-- Ligne NAS mise en avant -->
+  <rect x="30" y="188" width="700" height="42" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <g font-size="14" fill="#0f172a">
+    <!-- Desktop -->
+    <text x="40" y="122">Bureautique</text>
+    <rect x="240" y="102" width="130" height="30" rx="6" fill="#2563eb"/>
+    <text x="305" y="122" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">WD Blue</text>
+    <text x="440" y="122">BarraCuda</text>
+    <text x="610" y="122">P300</text>
+
+    <!-- Performance -->
+    <text x="40" y="168">Desktop performance</text>
+    <rect x="240" y="148" width="130" height="30" rx="6" fill="#111827"/>
+    <text x="305" y="168" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">WD Black</text>
+    <text x="440" y="168">FireCuda</text>
+    <text x="610" y="168">X300</text>
+
+    <!-- NAS -->
+    <text x="40" y="214" font-weight="bold">NAS / homelab ★</text>
+    <rect x="240" y="194" width="150" height="30" rx="6" fill="#dc2626"/>
+    <text x="315" y="214" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">WD Red Plus / Pro</text>
+    <text x="440" y="214" font-weight="bold">IronWolf (Pro)</text>
+    <text x="610" y="214" font-weight="bold">N300</text>
+
+    <!-- Surveillance -->
+    <text x="40" y="260">Vidéosurveillance</text>
+    <rect x="240" y="240" width="130" height="30" rx="6" fill="#7c3aed"/>
+    <text x="305" y="260" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">WD Purple</text>
+    <text x="440" y="260">SkyHawk</text>
+    <text x="610" y="260">S300</text>
+
+    <!-- Datacenter -->
+    <text x="40" y="306">Datacenter</text>
+    <rect x="240" y="286" width="150" height="30" rx="6" fill="#d97706"/>
+    <text x="315" y="306" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">WD Gold / Ultrastar</text>
+    <text x="440" y="306">Exos</text>
+    <text x="610" y="306">MG series</text>
+  </g>
+
+  <text x="30" y="348" font-size="12" font-style="italic" fill="#64748b">Chez WD, la couleur de la boîte suffit à identifier l'usage. Chez Seagate et Toshiba, il faut lire le nom de la gamme.</text>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="Segoe UI, Arial, sans-serif">
+  <rect x="0" y="0" width="760" height="400" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="30" y="42" font-size="17" font-weight="bold" fill="#0f172a">CMR vs SMR — les pistes vues en coupe</text>
+
+  <!-- Panneau CMR -->
+  <text x="40" y="80" font-size="15" font-weight="bold" fill="#047857">CMR — pistes séparées</text>
+  <g font-size="12" fill="#ffffff">
+    <rect x="40" y="96" width="280" height="26" rx="4" fill="#10b981"/>
+    <text x="52" y="114">Piste A</text>
+    <rect x="40" y="136" width="280" height="26" rx="4" fill="#10b981"/>
+    <text x="52" y="154">Piste B</text>
+    <rect x="40" y="176" width="280" height="26" rx="4" fill="#10b981"/>
+    <text x="52" y="194">Piste C</text>
+    <rect x="40" y="216" width="280" height="26" rx="4" fill="#10b981"/>
+    <text x="52" y="234">Piste D</text>
+  </g>
+  <!-- Tête d'écriture CMR : même largeur qu'une piste -->
+  <rect x="330" y="136" width="22" height="26" rx="3" fill="#0f766e"/>
+  <text x="330" y="180" font-size="11" fill="#0f766e">tête =</text>
+  <text x="330" y="193" font-size="11" fill="#0f766e">1 piste</text>
+  <g font-size="13" fill="#065f46">
+    <text x="40" y="278">✔ Chaque piste se réécrit indépendamment</text>
+    <text x="40" y="298">✔ Écritures aléatoires rapides, RAID fiable</text>
+  </g>
+
+  <!-- Panneau SMR -->
+  <text x="410" y="80" font-size="15" font-weight="bold" fill="#b45309">SMR — pistes chevauchées (« tuiles »)</text>
+  <g stroke="#b45309" stroke-width="1">
+    <rect x="410" y="96" width="260" height="26" rx="4" fill="#fbbf24"/>
+    <rect x="410" y="112" width="260" height="26" rx="4" fill="#f59e0b"/>
+    <rect x="410" y="128" width="260" height="26" rx="4" fill="#fbbf24"/>
+    <rect x="410" y="144" width="260" height="26" rx="4" fill="#f59e0b"/>
+    <rect x="410" y="160" width="260" height="26" rx="4" fill="#fbbf24"/>
+  </g>
+  <g font-size="11" fill="#78350f">
+    <text x="416" y="108">A</text>
+    <text x="416" y="124">B</text>
+    <text x="416" y="140">C</text>
+    <text x="416" y="156">D</text>
+    <text x="416" y="178">E</text>
+  </g>
+  <!-- Tête d'écriture SMR : plus large que le pas des pistes -->
+  <rect x="680" y="112" width="22" height="26" rx="3" fill="#92400e"/>
+  <text x="676" y="158" font-size="11" fill="#92400e">tête &gt;</text>
+  <text x="676" y="171" font-size="11" fill="#92400e">1 piste</text>
+  <line x1="691" y1="138" x2="640" y2="134" stroke="#92400e" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="480" y="212" font-size="12" fill="#92400e" font-style="italic">Écrire sur B écrase une partie de C…</text>
+  <g font-size="13" fill="#92400e">
+    <text x="410" y="278">✘ Modifier une piste = relire puis réécrire toute la bande</text>
+    <text x="410" y="298">✘ Écritures aléatoires lentes, dangereux en RAID</text>
+  </g>
+
+  <line x1="40" y1="326" x2="720" y2="326" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="40" y="356" font-size="12" font-style="italic" fill="#64748b">Le seul avantage du SMR : à surface égale, environ 15-20 % de capacité en plus —</text>
+  <text x="40" y="374" font-size="12" font-style="italic" fill="#64748b">d'où son prix au To plus bas, acceptable uniquement pour de l'archivage séquentiel.</text>
+</svg>

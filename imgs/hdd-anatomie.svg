@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="Segoe UI, Arial, sans-serif">
+  <rect x="0" y="0" width="760" height="440" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="30" y="42" font-size="17" font-weight="bold" fill="#0f172a">Anatomie d'un disque dur 3,5″ (vue de dessus, capot retiré)</text>
+
+  <!-- Boîtier -->
+  <rect x="60" y="70" width="250" height="330" rx="10" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>
+
+  <!-- Plateau -->
+  <circle cx="185" cy="195" r="105" fill="#b6c2d1" stroke="#64748b" stroke-width="1.5"/>
+  <circle cx="185" cy="195" r="85" fill="none" stroke="#9fb0c2" stroke-width="1"/>
+  <circle cx="185" cy="195" r="65" fill="none" stroke="#9fb0c2" stroke-width="1"/>
+  <circle cx="185" cy="195" r="45" fill="none" stroke="#9fb0c2" stroke-width="1"/>
+
+  <!-- Axe / moteur -->
+  <circle cx="185" cy="195" r="16" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5"/>
+  <circle cx="185" cy="195" r="4" fill="#64748b"/>
+  <circle cx="185" cy="181" r="2.2" fill="#94a3b8"/>
+  <circle cx="185" cy="209" r="2.2" fill="#94a3b8"/>
+  <circle cx="173" cy="188" r="2.2" fill="#94a3b8"/>
+  <circle cx="197" cy="188" r="2.2" fill="#94a3b8"/>
+  <circle cx="173" cy="202" r="2.2" fill="#94a3b8"/>
+  <circle cx="197" cy="202" r="2.2" fill="#94a3b8"/>
+
+  <!-- Bras + pivot -->
+  <line x1="270" y1="350" x2="150" y2="240" stroke="#7c8ea3" stroke-width="11" stroke-linecap="round"/>
+  <circle cx="270" cy="350" r="18" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5"/>
+  <circle cx="270" cy="350" r="5" fill="#64748b"/>
+  <rect x="138" y="222" width="20" height="20" rx="4" fill="#334155"/>
+
+  <!-- Connecteurs -->
+  <rect x="75" y="380" width="70" height="13" rx="2" fill="#1e293b"/>
+  <rect x="160" y="380" width="110" height="13" rx="2" fill="#475569"/>
+
+  <!-- Légendes -->
+  <g font-size="14" fill="#0f172a">
+    <circle cx="268" cy="140" r="3.5" fill="#0ea5e9"/>
+    <line x1="268" y1="140" x2="410" y2="110" stroke="#94a3b8" stroke-width="1.2"/>
+    <text x="418" y="106" font-weight="bold">Plateau magnétique</text>
+    <text x="418" y="124" font-size="12" fill="#475569">stocke les données ; 1 à 10 plateaux empilés</text>
+
+    <circle cx="250" cy="195" r="3.5" fill="#0ea5e9"/>
+    <line x1="250" y1="195" x2="410" y2="172" stroke="#94a3b8" stroke-width="1.2"/>
+    <text x="418" y="168" font-weight="bold">Pistes concentriques</text>
+    <text x="418" y="186" font-size="12" fill="#475569">c'est leur agencement qui distingue CMR et SMR</text>
+
+    <circle cx="196" cy="208" r="3.5" fill="#0ea5e9"/>
+    <line x1="196" y1="208" x2="410" y2="236" stroke="#94a3b8" stroke-width="1.2"/>
+    <text x="418" y="232" font-weight="bold">Moteur / axe de rotation</text>
+    <text x="418" y="250" font-size="12" fill="#475569">5 400 à 7 200 tours/minute en continu</text>
+
+    <circle cx="150" cy="234" r="3.5" fill="#0ea5e9"/>
+    <line x1="150" y1="234" x2="120" y2="300" stroke="#94a3b8" stroke-width="1.2"/>
+    <line x1="120" y1="300" x2="410" y2="300" stroke="#94a3b8" stroke-width="1.2"/>
+    <text x="418" y="296" font-weight="bold">Bras et tête de lecture/écriture</text>
+    <text x="418" y="314" font-size="12" fill="#475569">la tête survole le plateau à quelques nanomètres</text>
+
+    <circle cx="215" cy="386" r="3.5" fill="#0ea5e9"/>
+    <line x1="215" y1="386" x2="410" y2="364" stroke="#94a3b8" stroke-width="1.2"/>
+    <text x="418" y="360" font-weight="bold">Connecteurs SATA</text>
+    <text x="418" y="378" font-size="12" fill="#475569">données (petit) + alimentation (grand)</text>
+  </g>
+
+  <text x="30" y="424" font-size="12" font-style="italic" fill="#64748b">Un disque mécanique est un objet de précision en mouvement permanent : chocs et vibrations sont ses pires ennemis.</text>
+</svg>
