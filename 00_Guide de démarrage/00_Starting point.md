@@ -7,7 +7,7 @@ tags:
   - démarrage
 reading-time: 10m
 date: 12-11-2025
-last_modified: 31-05-2026
+last_modified: 04-07-2026
 status: published
 ---
 # Bienvenue !
@@ -61,6 +61,7 @@ Héberger soi-même, posséder ses fichiers, ses services et son infrastructure,
 
 # Glossaire
 
-Nous parlons dans ce guide de NAS et de Homelabs. Je distingue les deux pour des cas d'usages différents. A mon sens, un homelab est un environnement dans lequel on héberge des services que l'on souhaite mettre à l'épreuve (lab) et qui sert à héberger des services. Un NAS quand a lui sert à héberger des services simples et bas niveau de partage de fichiers, le stockage long-terme de sauvegardes et l'hébergement d'applications légères.
+Les termes techniques utilisés tout au long de cette série (NAS, RAID, mergerfs, reverse proxy, Zero Trust...) sont regroupés dans une note dédiée.
 
-Aujourd'hui, les entreprises comme Synology ou QNAP tendent à réduire ce gap. Mais les puissances de calcul de ces bestioles sont encore loin des processeurs grands publics classiques dédiés à des ordinateurs de bureau ou des serveurs.
+> [!info]
+> Consultez le [[99_Glossaire]] pour retrouver toutes les définitions.
