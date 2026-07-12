@@ -1,0 +1,8 @@
+{
+	"nodes":[
+		{"id":"30890b4bb1c79ebd","x":226,"y":-107,"width":250,"height":60,"type":"text","text":"Routeur"},
+		{"id":"f03371ebaaef3511","x":242,"y":52,"width":250,"height":60,"type":"text","text":"Switch 48 Ports"},
+		{"id":"90bab60858dc9dac","x":-280,"y":112,"width":250,"height":60,"type":"text","text":"Pandaria"}
+	],
+	"edges":[]
+}
