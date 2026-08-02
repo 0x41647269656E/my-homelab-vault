@@ -8,11 +8,6 @@
 		{"id":"a8f66ff7401737c3","type":"text","text":"Dashboards","x":357,"y":-415,"width":250,"height":50},
 		{"id":"7221dfa8cfb645ff","type":"text","text":"Documents","x":357,"y":251,"width":250,"height":60},
 		{"id":"d50b78484782922b","type":"text","text":"Paperless-ngx","x":840,"y":251,"width":250,"height":60},
-		{"id":"1bac42cf7795be87","type":"text","text":"Gitlab","x":842,"y":458,"width":250,"height":60},
-		{"id":"8e0ecd5e8441b1bb","type":"text","text":"File Transferts","x":357,"y":640,"width":250,"height":60},
-		{"id":"5ecacb348ec78ed2","type":"text","text":"Syncthings","x":842,"y":640,"width":250,"height":60},
-		{"id":"18bce6c027881dc5","type":"text","text":"Versionning","x":357,"y":458,"width":250,"height":60},
-		{"id":"c745ec055f697ea7","type":"text","text":"Download","x":357,"y":760,"width":250,"height":60},
 		{"id":"0d6682a3c080f42d","type":"text","text":"Gestion des bibliothèques","x":840,"y":155,"width":250,"height":60},
 		{"id":"4e3880a75d54f828","type":"text","text":"Sonarr - TV Series Collections","x":1240,"y":155,"width":280,"height":60},
 		{"id":"1333d82b8d75f752","type":"text","text":"Lidarr - Music Collections","x":1240,"y":245,"width":280,"height":59},
@@ -21,14 +16,23 @@
 		{"id":"1bff34a6a37bd7e1","type":"text","text":"Radarr - Movies Collections","x":1240,"y":67,"width":280,"height":60},
 		{"id":"e694deed95c56109","type":"text","text":"Backups","x":357,"y":360,"width":250,"height":60},
 		{"id":"b62cec1a95387710","type":"text","text":"Duplicati","x":840,"y":360,"width":250,"height":60},
-		{"id":"72c3e035c978da42","type":"text","text":"Ollama","x":842,"y":880,"width":247,"height":60},
-		{"id":"7441b19668c87387","type":"text","text":"OpenClaw","x":842,"y":960,"width":247,"height":60},
-		{"id":"de5cca71304c9751","type":"text","text":"AI","x":357,"y":875,"width":250,"height":65},
 		{"id":"e027c2665bc0d717","type":"text","text":"My Homelab","x":-320,"y":251,"width":260,"height":60},
 		{"id":"cc1c0055de07722b","type":"text","text":"Bazarr - Subtitles","x":1240,"y":330,"width":280,"height":60},
-		{"id":"d9b1a6e4d2bb6ebc","x":839,"y":1050,"width":250,"height":60,"type":"text","text":"Home Assistant"},
-		{"id":"4959bedc429cbe6d","x":357,"y":1050,"width":250,"height":60,"type":"text","text":"Domotique"},
-		{"id":"1bdb9b0e6409e502","x":839,"y":1160,"width":250,"height":60,"type":"text","text":"Zibgee2MQTT"}
+		{"id":"79026c25ec004e74","x":839,"y":460,"width":250,"height":60,"type":"text","text":"Velero"},
+		{"id":"5ecacb348ec78ed2","type":"text","text":"Syncthings","x":843,"y":700,"width":250,"height":60},
+		{"id":"72c3e035c978da42","type":"text","text":"Ollama","x":843,"y":940,"width":247,"height":60},
+		{"id":"7441b19668c87387","type":"text","text":"OpenClaw","x":843,"y":1020,"width":247,"height":60},
+		{"id":"d9b1a6e4d2bb6ebc","type":"text","text":"Home Assistant","x":840,"y":1110,"width":250,"height":60},
+		{"id":"1bdb9b0e6409e502","type":"text","text":"Zibgee2MQTT","x":840,"y":1220,"width":250,"height":60},
+		{"id":"1bac42cf7795be87","type":"text","text":"Gitlab","x":841,"y":580,"width":250,"height":60},
+		{"id":"8e0ecd5e8441b1bb","type":"text","text":"File Transferts","x":358,"y":700,"width":250,"height":60},
+		{"id":"c745ec055f697ea7","type":"text","text":"Download","x":358,"y":820,"width":250,"height":60},
+		{"id":"de5cca71304c9751","type":"text","text":"AI","x":358,"y":935,"width":250,"height":65},
+		{"id":"4959bedc429cbe6d","type":"text","text":"Domotique","x":358,"y":1110,"width":250,"height":60},
+		{"id":"18bce6c027881dc5","type":"text","text":"Versionning","x":361,"y":580,"width":250,"height":60},
+		{"id":"56d6fdffd1b9854c","x":1263,"y":-435,"width":250,"height":60,"type":"text","text":"Homelable"},
+		{"id":"3d862833e5540e17","x":1263,"y":-344,"width":250,"height":60,"type":"text","text":"Flame"},
+		{"id":"21c9f57219b7d1df","x":1138,"y":-520,"width":250,"height":60,"type":"text","text":"Prometheus"}
 	],
 	"edges":[
 		{"id":"5fcef6f9c24edeaf","fromNode":"a8f66ff7401737c3","fromSide":"right","toNode":"5ca1300247a5c1ff","toSide":"left","toEnd":"none"},
@@ -58,6 +62,8 @@
 		{"id":"28a08ccf5fe3198c","fromNode":"0d6682a3c080f42d","fromSide":"right","toNode":"cc1c0055de07722b","toSide":"left"},
 		{"id":"8b7b1f04d360158f","fromNode":"e027c2665bc0d717","fromSide":"right","toNode":"4959bedc429cbe6d","toSide":"left"},
 		{"id":"ec74aee6bc96468c","fromNode":"4959bedc429cbe6d","fromSide":"right","toNode":"d9b1a6e4d2bb6ebc","toSide":"left"},
-		{"id":"91fc88b513e1bc1b","fromNode":"4959bedc429cbe6d","fromSide":"right","toNode":"1bdb9b0e6409e502","toSide":"left"}
+		{"id":"91fc88b513e1bc1b","fromNode":"4959bedc429cbe6d","fromSide":"right","toNode":"1bdb9b0e6409e502","toSide":"left"},
+		{"id":"4a71a222882aa8c8","fromNode":"e694deed95c56109","fromSide":"right","toNode":"79026c25ec004e74","toSide":"left"},
+		{"id":"6f9d33a27896b86c","fromNode":"58a40a8f2d8aa0b7","fromSide":"right","toNode":"21c9f57219b7d1df","toSide":"left"}
 	]
 }
