@@ -51,6 +51,7 @@ created: (unknown)
 - [[Prometheus]]
 
 ## 🧬 Flux de données
+
 ```mermaid
 graph LR
 Devices[Capteurs/Equipements] --> HA[Home Assistant]

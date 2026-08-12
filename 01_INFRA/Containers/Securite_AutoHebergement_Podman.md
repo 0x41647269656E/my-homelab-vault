@@ -31,26 +31,13 @@ Dans cet article, nous allons voir pourquoi Podman est un excellent choix pour l
 
 L’auto-hébergement consiste à installer et administrer soi-même des services numériques sur une machine que l’on contrôle : mini-PC à la maison, NAS, serveur dédié, VPS ou machine virtuelle.
 
-Les avantages sont réels :
+Les avantages sont réels : on garde la maîtrise de ses données et la liberté de configurer ses outils comme on l’entend, souvent pour moins cher qu’un empilement d’abonnements, tout en s’affranchissant des plateformes et de leurs conditions changeantes. Et chaque service installé est une occasion de plus de monter en compétence.
 
-- maîtrise des données ;
-- liberté de configuration ;
-- coûts souvent réduits ;
-- indépendance vis-à-vis des plateformes ;
-- montée en compétence technique.
-
-Mais les responsabilités augmentent également :
-
-- maintenir le système à jour ;
-- sécuriser les accès ;
-- surveiller les journaux ;
-- limiter l’exposition réseau ;
-- sauvegarder les données ;
-- gérer les incidents.
+Mais tout ce que ces plateformes faisaient à votre place vous revient : c’est vous qui maintenez le système à jour, qui sécurisez les accès, qui gardez un œil sur les journaux, qui décidez de ce qui est exposé au réseau et qui sauvegardez les données. Et le jour où quelque chose casse, c’est encore vous qui gérez l’incident, généralement un dimanche soir.
 
 Un service mal configuré peut exposer des fichiers sensibles, permettre des intrusions ou servir de point d’entrée sur tout le serveur.
 
-L’objectif n’est donc pas d’atteindre une sécurité parfaite — illusoire — mais de **réduire les risques** par couches successives : isolation, moindre privilège, segmentation réseau, mises à jour et supervision.
+L’objectif n’est donc pas d’atteindre une sécurité parfaite, illusoire, mais de **réduire les risques** par couches successives : isolation, moindre privilège, segmentation réseau, mises à jour et supervision.
 
 ---
 
@@ -125,6 +112,35 @@ Cela réduit :
 - la surface d’attaque ;
 - la complexité ;
 - les dépendances système.
+
+### Le socket Docker : les clés du royaume
+
+Un aparté s’impose ici, car il éclaire tout l’intérêt du modèle sans daemon.
+
+Dans le monde Docker, chaque commande passe par l’API du daemon, exposée via le socket Unix `/var/run/docker.sock`. Or ce daemon tourne en root : quiconque peut écrire sur ce socket peut lui demander de lancer n’importe quel conteneur, avec n’importe quelles options.
+
+```bash
+docker run -v /:/host --privileged -it alpine chroot /host
+```
+
+Une commande de ce type, envoyée via le socket, monte l’intégralité du système de fichiers de l’hôte dans un conteneur contrôlé par l’attaquant. L’accès au socket Docker **est** un accès root — d’où son surnom : « les clés du royaume ». Corollaire souvent ignoré : ajouter un utilisateur au groupe `docker`, c’est lui donner un équivalent de sudo sans mot de passe. Docker le documente d’ailleurs explicitement.
+
+Le piège, c’est que tout un écosystème d’outils très populaires réclame précisément ce socket pour fonctionner :
+
+- Watchtower, pour les mises à jour automatiques ;
+- Portainer, Dockge et les autres interfaces de gestion ;
+- Traefik, pour l’auto-découverte des conteneurs ;
+- divers agents de supervision.
+
+On se retrouve donc à confier les clés du royaume à des conteneurs tiers — parfois exposés au réseau — en pariant sur la qualité de leur code et l’intégrité de leur chaîne de distribution.
+
+Si vous restez sous Docker, des parades existent :
+
+1. intercaler un **socket-proxy** (par exemple `docker-socket-proxy`), qui ne laisse passer que les appels d’API strictement nécessaires à l’outil ;
+2. réserver ces outils à un réseau interne, jamais exposé ;
+3. monter le socket en lecture seule (`:ro`)... protection largement illusoire : cela empêche de remplacer le fichier, pas d’écrire *dans* le socket — l’API reste pleinement utilisable.
+
+Et sous Podman ? Le problème disparaît en grande partie par construction : pas de daemon, donc pas de socket root central obligatoire. Podman sait exposer un socket compatible avec l’API Docker (`podman.socket`) pour les outils qui en dépendent, mais il est optionnel et, en rootless, il porte les droits d’un utilisateur ordinaire — pas ceux de root. Quant au besoin le plus courant, les mises à jour automatiques, Podman le couvre nativement via systemd, sans socket ni conteneur tiers : voir [[Duel_Docker_Podman_Kubernetes|le comparatif des plateformes]].
 
 ### Le mode rootless
 

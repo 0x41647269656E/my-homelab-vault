@@ -16,7 +16,39 @@ date: 12-11-2025
 last_modified: 29-06-2026
 status: published
 ---
-Dans cet article, on s'intéresse à lister les solutions qui s'offrent à un tech-enthusiat pour monter à la maison un homelab.
+Dans cet article, on s'intéresse à lister les solutions qui s'offrent à un tech-enthusiat pour monter à la maison un homelab. Mais avant de comparer les technologies, commençons par ce qui devrait toujours venir en premier : le besoin.
+
+# Avant la technique : le cahier des charges
+
+L'erreur classique consiste à choisir la technologie d'abord (ZFS parce que tout Reddit en parle, Ceph parce que c'est ce que font les pros) puis à découvrir ses contraintes ensuite. Faisons l'inverse : les technologies de stockage ne sont que des réponses. Encore faut-il avoir posé les questions.
+
+## De quoi doit-on se prémunir ?
+
+Chaque menace appelle une parade différente — et aucune technologie ne les couvre toutes :
+
+| Menace | Parade | Exemples de technologies |
+|---|---|---|
+| Panne d'un **disque** | Redondance locale | RAID 1/5/6, miroir ZFS, RAIDZ, SnapRAID |
+| Panne d'une **machine** (alim, carte mère, RAM...) | Redondance multi-machines... ou une bonne restauration | Ceph — ou réplication + sauvegardes |
+| **Erreur humaine** (le `rm -rf` du vendredi soir) | Snapshots + sauvegardes versionnées | Snapshots ZFS, backups |
+| **Corruption silencieuse** (bit rot) | Checksums, self-healing, scrubs réguliers | ZFS, Ceph |
+| **Sinistre** (foudre, incendie, vol) | Copie hors site | Règle 3-2-1 |
+| **Ransomware** | Sauvegardes déconnectées ou immuables | Snapshots read-only, disque offline |
+
+> [!failure] Répétons-le : la redondance n'est pas une sauvegarde
+> La redondance protège la **disponibilité** (le service continue malgré un disque mort), pas les **données** : une suppression accidentelle, un chiffrement par ransomware ou une corruption logicielle seront fidèlement répliqués sur tous les disques de la grappe, instantanément. Mes 40 To perdus en 2025 ([[00_Starting point|l'histoire est ici]]) l'ont été malgré la redondance. La règle **3-2-1** (3 copies, 2 supports différents, 1 hors site) s'applique *en plus* de tout ce qui suit, jamais à la place.
+
+## Les six questions à se poser
+
+1. **Mes données sont-elles reconstructibles ?** Une vidéothèque se retélécharge ; les photos de famille et le dossier Paperless, non. Il est parfaitement sain d'avoir **deux politiques de stockage** dans le même homelab : le précieux (redondé, snapshoté, sauvegardé 3-2-1) et le reconstructible (parité légère, voire rien du tout).
+2. **Combien de temps puis-je rester en panne ?** Si "je répare le week-end prochain" est acceptable — et pour un homelab, c'est presque toujours le cas — alors vous n'avez *pas besoin* de haute disponibilité, et vous venez d'économiser 80 % de la complexité de ce dossier. La HA sert à ne jamais s'arrêter ; la sauvegarde sert à toujours pouvoir repartir. On confond souvent les deux.
+3. **Combien de données puis-je perdre ?** Autrement dit : quel âge aura ma dernière sauvegarde (ou réplication) au moment de l'incident ? Une heure ? Une journée ? C'est ce qui dimensionne la fréquence des snapshots et des backups.
+4. **Comment le stockage va-t-il grandir ?** Pool dimensionné une bonne fois pour toutes (philosophie RAIDZ) ou ajout de disques au fil de l'eau et des promos (philosophie JBOD/Unraid) ? Les deux écoles s'opposent frontalement, on le verra.
+5. **Quelles performances, pour quel réseau ?** Inutile de rêver en NVMe si tout transite par du gigabit : 1 GbE ≈ 110 Mo/s, c'est le plafond de verre de la plupart des homelabs. Quant au stockage distribué, ses performances sont littéralement *définies* par le réseau.
+6. **Combien de machines ?** Une seule machine élimine d'office le stockage distribué (Ceph, GlusterFS) — ou le réduit à du théâtre, on y revient plus bas.
+
+Gardez vos réponses sous le coude : la conclusion de cet article y renverra pour désigner la technologie adaptée à chaque cas.
+
 # Un point sur le stockage
 
 Ces derniers temps, un grand nombre de technologies de stockage ont fait leur apparition. Commençons par démystifier les termes.
@@ -26,6 +58,17 @@ Le RAID (*Redondant Arrays of Inexpensive Disks*) est une technologie historique
 Il existe plusieurs niveaux de raids autorisant la perte d'un ou plusieurs supports physiques.
 
 ![[Pasted image 20230608133040.png]]
+
+### Les niveaux à connaître : RAID 0, 1, 5 (et les autres)
+
+- **RAID 0 (striping)** : les données sont découpées en bandes réparties sur tous les disques. Capacités et débits s'additionnent, mais *aucune tolérance de panne* — pire, un seul disque mort emporte **la totalité** de la grappe. À réserver à des données jetables (cache, espace de travail), jamais à du stockage.
+- **RAID 1 (miroir)** : chaque octet est écrit sur deux disques. On sacrifie 50 % de la capacité contre la tolérance à la perte d'un disque, des lectures rapides et surtout une récupération triviale : chaque membre du miroir reste lisible seul. Le choix par défaut d'un petit serveur à deux disques.
+- **RAID 5 (parité répartie)** : n disques, capacité de n-1, tolère la perte d'un disque. Le compromis capacité/protection historique... qui vieillit mal à l'ère des gros disques : reconstruire une grappe de disques de 12-20 To prend des jours, pendant lesquels les survivants sont sollicités à 100 % — le pire moment pour rencontrer une erreur de lecture ou perdre un deuxième disque. Au-delà de quelques To par disque, préférez une double parité.
+- **RAID 6 / RAIDZ2 (double parité)** : capacité de n-2, survit à deux pertes simultanées — donc à *une panne pendant la reconstruction*. Le standard raisonnable dès 4-5 gros disques.
+- **RAID 10 (miroirs stripés)** : performances maximales, reconstructions rapides, 50 % de capacité. Le choix des bases de données et des VMs.
+
+> [!tip] La vraie question n'est pas "quel RAID ?" mais "que se passe-t-il pendant la reconstruction ?"
+> Une grappe dégradée n'est plus redondante. Le niveau de parité (simple ou double) se choisit en fonction du temps de reconstruction — donc de la taille des disques, pas seulement de leur nombre.
 
 ### Raid matériel
 
@@ -132,9 +175,49 @@ Les données sont **répliquées** (ou distribuées via **erasure coding**), ce 
 Ceph convient particulièrement aux **grands volumes de données** et aux **installations décentralisées**, comme un ensemble de NAS familiaux répartis sur différents sites ou un cluster d’entreprise. Il est nativement intégré dans OpenStack et Proxmox (pour le stockage des images, volumes et objets) et Kubernetes (via le provisionneur Rook).
 
 Grâce à son architecture basée sur RADOS (Reliable Autonomic Distributed Object Store), Ceph offre des performances élevées, une forte résilience et une grande souplesse de déploiement sur du matériel standard.
+
+### Ce que le gorille mange réellement
+
+Un cluster Ceph, même minimal, empile des démons : des moniteurs (MON, en quorum de 3), des managers, et un OSD par disque — chaque OSD réclamant de l'ordre de 4 à 5 Go de RAM. Ajoutez la réplication par défaut en 3 copies (votre capacité utile est divisée par trois) et un réseau rapide, idéalement dédié : **une écriture n'est acquittée qu'une fois répliquée sur les autres nœuds**, la latence du réseau devient donc la latence de votre stockage. En 1 GbE, l'expérience est douloureuse ; le 10 GbE n'est pas un luxe, c'est le ticket d'entrée.
+
+### Mon avis : Ceph en mono-nœud
+
+C'est techniquement possible (en abaissant le domaine de panne de la machine au disque), mais c'est faire monter le gorille dans la twingo : tout l'encombrement, aucun bénéfice. Vous payez la totalité de la complexité logicielle — démons, RAM, chemin d'I/O RADOS — pour un résultat qu'un miroir ZFS local obtient mieux, plus vite et plus simplement, avec des performances nettement supérieures sur le même matériel. Verdict : un bac à sable pour apprendre Ceph, jamais un endroit où poser des données.
+
+### Mon avis : Ceph à trois nœuds
+
+Trois nœuds, c'est le minimum vital (quorum des moniteurs oblige). Avec trois machines, du 10 GbE et des SSD, on obtient enfin le vrai spectacle : un nœud s'éteint, les services redémarrent ailleurs, le cluster se répare seul — l'hyperconvergence façon Proxmox+Ceph fonctionne réellement, et c'est l'installation homelab la plus proche de ce qui se fait en entreprise. Mais mesurez le coût : trois machines qui consomment en permanence, un tiers de capacité utile, des IOPS aléatoires très en retrait d'un NVMe local (la faute aux allers-retours réseau), et une couche d'exploitation à part entière (placement groups, scrubs, rééquilibrages). En résumé : **magnifique pour apprendre la haute disponibilité, légitime si la disponibilité est un vrai besoin ; disproportionné pour servir Jellyfin et trois sauvegardes** — relisez la question 2 du cahier des charges.
 ## GlusterFS
 
+GlusterFS a longtemps été « le stockage distribué du pauvre » — et c'était un compliment. Le principe est élégant : chaque nœud expose de simples répertoires posés sur un système de fichiers classique (les *bricks*), que Gluster agrège en volumes distribués et/ou répliqués, montables via un client FUSE ou NFS. Pas de base d'objets, pas de démons de placement : les fichiers restent des fichiers, lisibles directement sur les bricks — un atout appréciable le jour où tout va mal. Face à Ceph, c'était l'option simple : un volume `replica 3` (ou `replica 2` + arbitre pour économiser un disque) se monte en une soirée.
 
+Le tableau s'assombrit sur deux points :
+
+- **Les performances.** Correctes en séquentiel sur de gros fichiers (le réseau reste le plafond), elles s'effondrent sur les métadonnées : parcourir des répertoires de milliers de petits fichiers (bibliothèque photos, Maildir...) interroge chaque réplique et devient vite pénible. En mono-nœud, l'exercice n'a tout simplement aucun sens — autant monter le disque en direct. À trois nœuds en `replica 3`, son terrain de jeu naturel, on obtient une tolérance de panne machine honnête au prix d'écritures multipliées par trois sur le réseau.
+- **La santé du projet**, et c'est rédhibitoire : Red Hat, moteur historique du développement, a arrêté son produit Gluster Storage (fin de support fin 2024) et l'activité upstream est réduite depuis à une maintenance minimale.
+
+> [!failure] Mon avis
+> En 2026, on ne bâtit plus d'infrastructure neuve sur GlusterFS. Si le besoin distribué est réel : Ceph. S'il ne l'est pas (relire la question 2 du cahier des charges) : de la réplication simple entre machines. Je le documente parce que vous le croiserez dans d'innombrables tutoriels — datés.
+
+# Quelle technologie pour quel besoin ?
+
+Reprenons le cahier des charges du début et déroulons les scénarios types :
+
+| Votre situation | La réponse raisonnable |
+|---|---|
+| Médias reconstructibles, disques dépareillés achetés au fil des promos, silence et facture électrique comptent | JBOD agrégé (mergerfs) + parité SnapRAID calculée périodiquement — ou [[03_Les plateformes\|Unraid]], qui industrialise exactement cette recette |
+| Données uniques et précieuses, une seule machine | Miroir ZFS (2 disques) ou RAIDZ2 (5-8 disques) + snapshots + sauvegarde 3-2-1 |
+| VMs et conteneurs exigeants en IOPS | Miroir ZFS sur SSD/NVMe ; le stockage froid à part, sur HDD |
+| Survivre à la panne d'une *machine*, sans prétention à la continuité de service | Deux machines et de la réplication (zfs send/receive, [[Syncthing]], rsync) + bascule manuelle : 90 % du bénéfice de la HA pour 10 % de sa complexité |
+| Trois machines, du 10 GbE, la HA comme objectif d'apprentissage ou vrai besoin | Ceph, idéalement via Proxmox — en connaissance du ticket d'entrée décrit plus haut |
+| Grappe de disques identiques, pas envie de ZFS | RAID logiciel mdadm (1 ou 6) — en acceptant l'absence de checksums de bout en bout et les caveats listés plus haut |
+
+Et deux principes pour arbitrer les cas restants :
+
+- **La complexité est un coût récurrent, pas un investissement ponctuel.** Chaque étage (parité, ZFS, distribution) devra être compris, surveillé, puis réparé un jour de panne — par la même personne : vous. La technologie la plus avancée que vous maîtrisez *vraiment* vaudra toujours mieux que la plus avancée qui existe.
+- **Aucune de ces technologies ne remplace la sauvegarde.** Le choix ci-dessus détermine combien de pannes vous encaissez sans interruption ; la règle 3-2-1 détermine si vos données existent encore l'année prochaine. Ce sont deux budgets séparés, et le second n'est pas négociable.
+
+# Ressources diverses
 
 - Cartes SATA : https://www.amazon.fr/gp/product/B098QPBCBJ/
 
