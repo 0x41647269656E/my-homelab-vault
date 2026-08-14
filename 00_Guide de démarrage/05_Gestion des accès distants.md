@@ -11,6 +11,7 @@ tags:
   - headscale
   - tunnel
 reading-time: 15m
+difficulty: tech-enthusiast
 date: 06-12-2025
 last_modified: 06-12-2025
 status: published

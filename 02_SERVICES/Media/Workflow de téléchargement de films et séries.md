@@ -10,6 +10,7 @@ tags:
   - workflow
   - automatisation
 reading-time: 15m
+difficulty: tech-enthusiast
 date: 31-05-2026
 last_modified: 31-05-2026
 status: published

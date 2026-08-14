@@ -7,6 +7,7 @@ tags:
   - glossaire
   - démarrage
 reading-time: 10m
+difficulty: newbie
 date: 04-07-2026
 last_modified: 04-07-2026
 status: published

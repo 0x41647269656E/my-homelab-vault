@@ -9,6 +9,7 @@ tags:
   - auto-hébergement
   - isolation
 reading-time: 15m
+difficulty: newbie
 date: 31-05-2026
 last_modified: 31-05-2026
 status: published

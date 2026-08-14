@@ -13,6 +13,7 @@ tags:
   - homelab
 date: 11-08-2026
 reading-time: 30min
+difficulty: tech-enthusiast
 ---
 # Docker, Podman ou Kubernetes : le duel des plateformes à conteneurs
 

@@ -8,6 +8,7 @@ tags:
   - raspberry-pi
   - nas
 reading-time: 15m
+difficulty: newbie
 date: 12-11-2025
 last_modified: 22-11-2025
 status: published

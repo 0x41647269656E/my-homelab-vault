@@ -5,6 +5,7 @@ series: "Guide de démarrage"
 tags:
   - security
 reading-time: 30m
+difficulty: tech-enthusiast
 date: 18-11-2025
 last_modified: 25-11-2025
 status: published

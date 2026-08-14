@@ -13,6 +13,7 @@ tags:
 date: 25-11-2025
 last_modified: 09-04-2026
 reading-time: 1h
+difficulty: newbie
 status: published
 ---
 # Les OS spécialisés

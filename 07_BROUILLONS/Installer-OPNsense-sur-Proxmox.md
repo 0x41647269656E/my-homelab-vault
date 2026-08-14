@@ -12,6 +12,7 @@ tags:
   - reseau
   - hardening
 reading-time: 30m
+difficulty: tech-guru
 date: 05-07-2026
 last_modified: 05-07-2026
 status: draft

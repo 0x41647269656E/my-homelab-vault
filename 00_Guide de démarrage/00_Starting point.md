@@ -6,6 +6,7 @@ tags:
   - homelab
   - démarrage
 reading-time: 10m
+difficulty: newbie
 date: 12-11-2025
 last_modified: 04-07-2026
 status: published
@@ -58,6 +59,17 @@ Même lorsqu'on achète un média sans passer par un abonnement, comme des musiq
 Votre père vous a peut-être légué sa montre, sa collection de vinyls ou son appareil-photo. Ce que vous achetez en ligne, vous ne pourrez pas le transmettre à votre mort, le contrat de licence que vous avez acheté vous l'interdit.
 
 Héberger soi-même, posséder ses fichiers, ses services et son infrastructure, ça vient en réponse, presque de manière militante à l'ensemble de ces problématiques.
+
+# Niveaux de difficulté
+
+Chaque article de ce vault affiche dans son cartouche d'en-tête (les propriétés de la note) une indication `difficulty`, en complément du temps de lecture estimé. Elle vous permet de savoir, avant d'entamer la lecture, si l'article correspond à votre bagage technique :
+
+- **newbie** : lecture accessible à tous, sans prérequis. Les notions sont expliquées au fil de l'eau, souvent avec un détour par le [[99_Glossaire|glossaire]].
+- **tech-enthusiast** : suppose d'être à l'aise avec les bases — ligne de commande Linux, notions de réseau et de conteneurs. C'est le niveau de la plupart des guides d'installation de ce vault.
+- **tech-guru** : articles qui plongent dans les mécanismes internes (namespaces du kernel, filtrage nftables, MAC, segmentation réseau fine). Un bagage d'administration système avancé rend la lecture nettement plus confortable.
+
+> [!tip]
+> Un niveau élevé n'est pas une barrière d'entrée : les articles restent progressifs et renvoient vers les notes qui posent les fondations. C'est simplement un indicateur du niveau d'attention à prévoir — on ne lit pas un article `tech-guru` en diagonale entre deux portes.
 
 # Glossaire
 

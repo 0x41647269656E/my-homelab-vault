@@ -1,3 +1,18 @@
+---
+title: "Docker rootless vs Podman + Quadlets"
+author: "0x41647269656E"
+series: Conteneurs
+tags:
+  - docker
+  - podman
+  - quadlets
+  - rootless
+  - systemd
+  - homelab
+date: 14-08-2026
+reading-time: 15min
+difficulty: tech-guru
+---
 # Docker rootless vs Podman + Quadlets
 
 ## 1. Le rootless en général : socle commun
@@ -9,16 +24,6 @@ Docker rootless et Podman rootless reposent sur les **mêmes mécanismes noyau L
 - **fuse-overlayfs** (ou overlayfs natif sur kernel ≥ 5.11-5.13) comme storage driver, en remplacement d'`overlay2` qui nécessite des privilèges.
 - **slirp4netns** ou **pasta** pour le réseau, en émulation userspace (pas d'accès direct aux interfaces hôte).
 - **cgroups v2** avec délégation systemd pour la gestion des limites de ressources (CPU/mémoire).
-
-### Exemple de mapping subuid/subgid
-
-```
-# /etc/subuid
-adrientanaka:100000:65536
-
-# /etc/subgid
-adrientanaka:100000:65536
-```
 
 ### Schéma du flux rootless générique
 
@@ -38,6 +43,8 @@ Utilisateur (UID 1000)
 
 Modèle client-serveur classique : un daemon unique (`dockerd`) tourne en arrière-plan dans un user namespace, orchestré par `rootlesskit`. Le client `docker` lui parle via un socket Unix. Tous les conteneurs sont des enfants de ce daemon.
 
+Dockerd a été écrit en partant du principe qu'il est root, et RootlessKit est l'outil qui lui fabrique un "faux" environnement root pour qu'il puisse tourner sans modification en tant qu'utilisateur normal. C'est une sorte de « fakeroot pour conteneurs », développé par Akihiro Suda (mainteneur Docker/containerd), et c'est lui qui fait le travail de préparation avant même que Docker ne démarre.
+
 ```
 docker run nginx
   └─ docker CLI → socket → dockerd (process persistant)
@@ -46,6 +53,20 @@ docker run nginx
 ```
 
 **Conséquence** : si `dockerd` crashe ou si la session est tuée sans `loginctl enable-linger`, **tous** les conteneurs meurent avec lui — point de défaillance unique.
+
+### La version plus technique de l'explication
+
+Concrètement, quand on lance Docker rootless (systemctl --user start docker), le service ne démarre pas dockerd directement. Il lance rootlesskit, qui fait quatre choses dans l'ordre :
+
+1. Fabriquer le faux root. Il crée le user namespace et le mount namespace, puis configure le mapping d'UID/GID en appelant newuidmap/newgidmap (les binaires setuid qui lisent tes /etc/subuid et /etc/subgid). Une fois le décor posé, il exécute dockerd à l'intérieur : le daemon se voit UID 0, avec le droit de monter des filesystems, de créer des interfaces réseau virtuelles, etc. — mais tout ça confiné au namespace.
+
+2. Donner du réseau au namespace. Dans un user namespace, on n'a aucun accès aux interfaces réseau de l'hôte. RootlessKit démarre donc le composant d'émulation userspace (slirp4netns, pasta ou vpnkit selon la config) et crée une interface tap dans le namespace : c'est par là que sort tout le trafic des conteneurs. C'est le lien avec ta section 5 — les limitations réseau du rootless viennent de cette couche.
+
+3. Faire fonctionner le -p 8080:80. C'est son port driver : le process rootlesskit, qui vit côté hôte avec tes droits d'utilisateur normal, écoute sur le port 8080 réel et relaie les connexions vers l'intérieur du namespace. Deux gotchas connus en découlent : impossible de publier un port < 1024 sans ajuster net.ipv4.ip_unprivileged_port_start (tes droits d'utilisateur s'appliquent), et avec le port driver par défaut (builtin), les conteneurs voient l'IP source du proxy et non celle du vrai client — gênant pour un reverse proxy ou du fail2ban.
+
+4. Préparer le terrain pour dockerd. Il « copy-up » certains répertoires (/etc, /run…) dans le namespace pour que le daemon puisse y écrire là où il s'y attend.
+
+Tu peux le voir en live sur une machine en Docker rootless : pstree -p $(pgrep -u $USER -x rootlesskit) montre la filiation rootlesskit → dockerd → containerd → …. C'est aussi pour ça que ton article dit que tout meurt d'un coup : rootlesskit est l'ancêtre commun de toute la pile.
 
 ### Podman
 

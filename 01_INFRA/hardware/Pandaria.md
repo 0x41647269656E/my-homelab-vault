@@ -8,6 +8,7 @@ tags:
   - nas
   - pandaria
 reading-time: 10m
+difficulty: newbie
 date: 31-05-2026
 last_modified: 31-05-2026
 status: published

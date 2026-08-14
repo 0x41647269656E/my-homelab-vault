@@ -12,6 +12,7 @@ tags:
 date: 05-06-2026
 last_modified: 05-06-2026
 reading-time: 15m
+difficulty: tech-enthusiast
 status: published
 ---
 

@@ -13,6 +13,7 @@ tags:
   - toshiba
 series: "Guide de démarrage"
 reading-time: 20m
+difficulty: newbie
 date: 29-06-2026
 last_modified: 04-07-2026
 status: published

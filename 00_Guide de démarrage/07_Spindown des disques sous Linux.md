@@ -13,6 +13,7 @@ tags:
   - smartd
   - linux
 reading-time: 20m
+difficulty: tech-enthusiast
 date: 29-06-2026
 last_modified: 29-06-2026
 status: draft

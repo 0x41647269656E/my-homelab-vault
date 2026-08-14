@@ -8,6 +8,7 @@ tags:
   - onduleur
   - norme-c15-100
 reading-time: 15m
+difficulty: newbie
 date: 22-11-2025
 last_modified: 22-04-2026
 status: published

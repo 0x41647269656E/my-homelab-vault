@@ -11,6 +11,7 @@ tags:
   - zero-trust
   - hardening
 reading-time: 20m
+difficulty: tech-enthusiast
 date: 05-07-2026
 last_modified: 05-07-2026
 status: draft

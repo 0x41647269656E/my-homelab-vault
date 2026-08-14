@@ -11,6 +11,7 @@ tags:
 date: 06-06-2026
 last_modified: 06-06-2026
 reading-time: 15m
+difficulty: tech-enthusiast
 status: draft
 ---
 
