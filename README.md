@@ -1,4 +1,4 @@
-# My Homelab Vault
+# my-homelab-vault
 
 ![Banner](https://raw.githubusercontent.com/0x41647269656E/my-homelab-vault/4823166e9ed9bf128046699773ad868c57346a13/banner.png)
 
