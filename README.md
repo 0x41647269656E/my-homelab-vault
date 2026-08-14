@@ -1,6 +1,6 @@
 # My Homelab Vault
 
-![Banner](https://raw.githubusercontent.com/0x41647269656E/my-homelab-vault/refs/heads/main/banner.png)
+![Banner](https://raw.githubusercontent.com/0x41647269656E/my-homelab-vault/4823166e9ed9bf128046699773ad868c57346a13/banner.png)
 
 Bienvenue dans mon dépot **Obsidian Vault pour Homelab** !
 
