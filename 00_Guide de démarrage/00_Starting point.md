@@ -13,7 +13,7 @@ status: published
 ---
 # Bienvenue !
 
-Bienvenue dans ce guide de démarrage de ce projet de documentation consacré aux homelabs !
+Bienvenue dans le guide de démarrage de ce projet de documentation consacré aux homelabs !
 
 Ce guide se veut être une ressource pour celles et ceux qui, comme moi, ont un jour voulu héberger des services à la maison et reprendre le contrôle de leurs données. Il présente différentes solutions techniques que j’ai étudiées, ainsi que les choix, parfois clivants, que j’ai réalisé. Ce guide n'a pas vocation à être une référence absolue en matière de homelabs mais simplement un retour d'expérience des solutions que j'ai évalué et mis en oeuvre.
 

@@ -34,7 +34,7 @@ created: (unknown)
 ![Stars](https://img.shields.io/github/stars/nicholas-fedor/watchtower?style=for-the-badge) ![Release](https://img.shields.io/github/v/release/nicholas-fedor/watchtower?style=for-the-badge&include_prereleases=true) ![Lang](https://img.shields.io/github/languages/top/nicholas-fedor/watchtower?style=for-the-badge) ![License](https://img.shields.io/github/license/nicholas-fedor/watchtower?style=for-the-badge) ![Last Commit](https://img.shields.io/github/last-commit/nicholas-fedor/watchtower?style=for-the-badge)
 
 > [!warning] Projet original archivé
-> Le dépôt historique `containrrr/watchtower` a été archivé le 17/12/2025 (mainteneurs partis). Cette fiche pointe désormais vers le **fork actif** `nicholas-fedor/watchtower`, compatible à l'identique (mêmes variables d'environnement) — seule l'image change : `nickfedor/watchtower`. Contexte complet dans [[Duel_Docker_Podman_Kubernetes|le comparatif des plateformes]].
+> Le dépôt historique `containrrr/watchtower` a été archivé le 17/12/2025 (mainteneurs partis). Cette fiche pointe désormais vers le **fork actif** `nicholas-fedor/watchtower`, compatible à l'identique (mêmes variables d'environnement) — seule l'image change : `nickfedor/watchtower`. Contexte complet dans [[01_Duel de plateformes d'hébergement de conteneurs|le comparatif des plateformes]].
 
 ## 🧠 Description
 **Watchtower** surveille les images Docker et met à jour automatiquement les conteneurs selon un planning.
@@ -90,7 +90,7 @@ services:
 
 # Notes
 - Migration depuis l'original : remplacer `containrrr/watchtower` par `nickfedor/watchtower` dans le compose, rien d'autre à changer (variables et comportement identiques).
-- Watchtower nécessite l'accès au socket Docker (les clés du royaume) : voir les réserves de sécurité dans [[Duel_Docker_Podman_Kubernetes|le comparatif des plateformes]]. Sous Podman, préférer `podman auto-update`, natif et sans socket.
+- Watchtower nécessite l'accès au socket Docker (les clés du royaume) : voir les réserves de sécurité dans [[01_Duel de plateformes d'hébergement de conteneurs|le comparatif des plateformes]]. Sous Podman, préférer `podman auto-update`, natif et sans socket.
 
 # Avis de l'auteur
 - À compléter

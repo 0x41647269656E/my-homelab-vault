@@ -88,7 +88,7 @@ services:
 - Les *status pages* publiques se configurent par groupe de monitors : bien choisir ce qu'on expose, une page de statut détaillée est aussi une cartographie de votre infra offerte aux curieux.
 - Notifications : très large choix natif (Telegram, Discord, SMTP, Apprise, webhooks... dont [[Notifiarr]]).
 - Métriques exposées sur `/metrics` (protégées par API key) pour scraping [[Prometheus]] et dashboard [[Grafana]].
-- Mise à jour : `docker compose pull && docker compose up -d` — ou automatisée, voir le comparatif [[Duel_Docker_Podman_Kubernetes|Docker vs Podman vs Kubernetes]].
+- Mise à jour : `docker compose pull && docker compose up -d` — ou automatisée, voir le comparatif [[01_Duel de plateformes d'hébergement de conteneurs|Docker vs Podman vs Kubernetes]].
 
 # Avis de l'auteur
 - À compléter
