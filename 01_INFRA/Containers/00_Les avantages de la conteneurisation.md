@@ -92,7 +92,7 @@ Chaque service fonctionne dans son propre environnement.
 
 Cela évite :
 
-- conflits de versions Python, PHP ou Node.js ;
+- conflits de versions Python, PHP ou Node.js (exécutables et librairies);
 - ports qui se chevauchent ;
 - bibliothèques incompatibles ;
 - impacts d’un crash sur les autres services.
@@ -161,80 +161,7 @@ Avec un fichier _docker compose_ ou un manifeste simple, vous pouvez recréer vo
 - changement de machine ;
 - restauration après panne.
 
-Vous relancez les conteneurs avec les mêmes volumes en réinjectant les mêmes configurations via les variables d'environnements et les fichiers de configuration montés dans le conteneur.
-
----
-
-# Cas d’usage concrets
-
-## Domotique
-
-Applications populaires :
-
-- Home Assistant
-- Node-RED
-- Zigbee2MQTT
-- Mosquitto
-
-### Pourquoi les conteneurs sont utiles :
-
-- mises à jour sans casser le système ;
-- séparation MQTT / interface / automatisation ;
-- redémarrage rapide ;
-- tests faciles.
-
----
-
-## Gestion de fichiers
-
-Solutions :
-
-- Nextcloud
-- Seafile
-- FileBrowser
-- Syncthing
-
-### Avantages :
-
-- stockage séparé des données ;
-- montée de version propre ;
-- base SQL isolée ;
-- migration simplifiée.
-
----
-
-## Services cloud personnels
-
-Exemples :
-
-- Vaultwarden
-- Gitea
-- MinIO
-- Paperless-ngx
-
-### Pourquoi c’est excellent :
-
-- dépendances déjà incluses ;
-- maintenance propre ;
-- déploiement rapide ;
-- sécurité renforcée.
-
----
-
-## Multimédia
-
-Exemples :
-
-- Jellyfin
-- Plex
-- Audiobookshelf
-- Navidrome
-
-### Avantages :
-
-- bibliothèques médias montées en volume ;
-- mises à jour simples ;
-- séparation avec autres services.
+Vous relancez les conteneurs avec les mêmes volumes en réinjectant les mêmes configurations via les variables d'environnements et les fichiers de configuration montés dans le conteneur
 
 ---
 
@@ -249,9 +176,6 @@ Les conteneurs consomment bien moins que des machines virtuelles.
 | Machine virtuelle | Élevée | Lent | Forte |
 | Conteneur | Faible | Très rapide | Bonne |
 | Installation native | Faible | N/A | Faible |
-
-> [!tip] Pour un mini-PC ou Raspberry Pi  
-> Les conteneurs sont souvent la meilleure option.
 
 ---
 

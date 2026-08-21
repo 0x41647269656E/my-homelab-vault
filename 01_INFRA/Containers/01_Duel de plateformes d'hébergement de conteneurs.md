@@ -32,7 +32,7 @@ difficulty: tech-enthusiast
 
 ## Introduction
 
-Dans les articles précédents, nous avons vu [[00_Avantages_Conteneurisation_AutoHebergement|pourquoi la conteneurisation s'impose pour l'auto-hébergement]] et [[Securite_AutoHebergement_Podman|comment sécuriser ses conteneurs]]. Reste une question que tout le monde finit par se poser, généralement après avoir copié-collé son premier `docker run` : *sur quelle plateforme est-ce que je construis tout ça ?*
+Dans les articles précédents, nous avons vu [[00_Les avantages de la conteneurisation|pourquoi la conteneurisation s'impose pour l'auto-hébergement]] et [[03_Sécurite Auto Hébergement Podman|comment sécuriser ses conteneurs]]. Reste une question que tout le monde finit par se poser, généralement après avoir copié-collé son premier `docker run` : *sur quelle plateforme est-ce que je construis tout ça ?*
 
 Ce choix est structurant. C'est lui qui déterminera :
 
@@ -64,7 +64,7 @@ Côté cycle de vie, seules les **deux dernières branches** reçoivent des corr
 
 ### Podman 6 — le moteur sans daemon
 
-Podman, porté par Red Hat, est le concurrent direct de Docker : même format d'images OCI, CLI quasi identique, mais une architecture radicalement différente. Pas de daemon central : chaque conteneur est un processus enfant lancé directement (fork/exec), ce qui s'intègre naturellement au **mode rootless** et à **systemd**. J'en ai déjà détaillé les bénéfices sécurité dans [[Securite_AutoHebergement_Podman|l'article dédié]].
+Podman, porté par Red Hat, est le concurrent direct de Docker : même format d'images OCI, CLI quasi identique, mais une architecture radicalement différente. Pas de daemon central : chaque conteneur est un processus enfant lancé directement (fork/exec), ce qui s'intègre naturellement au **mode rootless** et à **systemd**. J'en ai déjà détaillé les bénéfices sécurité dans [[03_Sécurite Auto Hébergement Podman|l'article dédié]].
 
 La branche actuelle est **Podman 6.0**, sortie fin juin 2026. Au menu :
 
@@ -79,7 +79,7 @@ La branche actuelle est **Podman 6.0**, sortie fin juin 2026. Au menu :
 
 Les **quadlets** méritent qu'on s'y arrête, car c'est eux qui font passer Podman du statut de "Docker sans daemon" à celui de véritable plateforme d'hébergement.
 
-Rappel rapide pour ceux qui auraient raté l'information : un quadlet est un **fichier texte déclaratif au format des unités systemd** (syntaxe INI, sections `[Unit]`, `[Container]`, `[Install]`...) décrivant un objet Podman — un conteneur, mais aussi un pod, un volume ou un réseau. Projet indépendant à l'origine (créé en 2021 par Alexander Larsson, de Red Hat), la fonctionnalité est intégrée nativement à Podman depuis la **version 4.4 (février 2023)**, où elle remplace l'ancien `podman generate systemd`, aujourd'hui déprécié : rien à installer en plus, c'est systemd lui-même qui lit ces fichiers et pilote Podman. C'est une exclusivité Podman — Docker n'a aucun équivalent natif, l'intégration systemd y reste artisanale (unités écrites à la main autour de `docker run`).
+Rappel rapide du fonctionnement : un quadlet est un **fichier texte déclaratif au format des unités systemd** (syntaxe INI, sections `[Unit]`, `[Container]`, `[Install]`...) décrivant un objet Podman, un conteneur, mais aussi un pod, un volume ou un réseau. Projet indépendant à l'origine (créé en 2021 par Alexander Larsson, de Red Hat), la fonctionnalité est intégrée nativement à Podman depuis la **version 4.4 (février 2023)**, où elle remplace l'ancien `podman generate systemd`, aujourd'hui déprécié : rien à installer en plus, c'est systemd lui-même qui lit ces fichiers et pilote Podman. C'est une exclusivité Podman, Docker n'a aucun équivalent natif, l'intégration systemd y reste artisanale (unités écrites à la main autour de `docker run`).
 
 Le principe en pratique : au lieu d'un `docker-compose.yml` interprété par un outil tiers, vous décrivez chaque conteneur dans un petit fichier `.container` déposé dans `~/.config/containers/systemd/` (rootless) ou `/etc/containers/systemd/` (rootful). Au `daemon-reload`, un générateur systemd transforme ce fichier en **service systemd natif** :
 
@@ -134,7 +134,7 @@ Les vraies difficultés (comprendre les volumes et les permissions, les réseaux
 
 La transition depuis Docker est volontairement indolore : le CLI est quasi identique (`alias docker=podman` fonctionne pour l'essentiel) et Podman expose un socket compatible avec l'API Docker — `docker compose` peut donc piloter Podman via `DOCKER_HOST`, et les compose files des README restent utilisables.
 
-Mais s'arrêter là serait passer à côté de l'outil. Le "vrai" Podman se pratique avec les quadlets, et cela suppose d'être à l'aise avec **systemd** : unités, `systemctl`, `journalctl`, `daemon-reload`. Il faut aussi apprivoiser les subtilités du rootless : mapping des UID/GID (`podman unshare`), `loginctl enable-linger` pour que vos services survivent à la déconnexion, ports privilégiés (voir [[Securite_AutoHebergement_Podman|l'article sécurité]]), étiquettes SELinux `:Z` selon la distribution.
+Mais s'arrêter là serait passer à côté de l'outil. Le "vrai" Podman se pratique avec les quadlets, et cela suppose d'être à l'aise avec **systemd** : unités, `systemctl`, `journalctl`, `daemon-reload`. Il faut aussi apprivoiser les subtilités du rootless : mapping des UID/GID (`podman unshare`), `loginctl enable-linger` pour que vos services survivent à la déconnexion, ports privilégiés (voir [[03_Sécurite Auto Hébergement Podman|l'article sécurité]]), étiquettes SELinux `:Z` selon la distribution.
 
 L'effort est réel mais borné, et c'est mon argument préféré, **tout ce que vous apprenez est du Linux réutilisable**. Rien n'est propriétaire à Podman : vous montez en compétence sur systemd, les namespaces et journald, pas sur un outil.
 
@@ -231,7 +231,7 @@ L'écosystème offre plusieurs philosophies :
 - **What's up Docker (WUD)** ou **Diun** : surveillent les registres et **notifient**, à vous d'appuyer sur le bouton. Le pilote semi-automatique, plus prudent.
 - **Dockge, Komodo, Portainer** : interfaces web de gestion de stacks avec bouton de mise à jour intégré (attention aux fonctionnalités premium payantes 😜).
 
-Deux réserves. D'une part, ces outils exigent l'accès au socket Docker — un conteneur tiers avec les clés du royaume, j'en parle en détail dans la section [[Securite_AutoHebergement_Podman#Le socket Docker : les clés du royaume|« Le socket Docker : les clés du royaume » de l'article sécurité]]. D'autre part, en cas de mise à jour qui casse, le retour arrière est manuel (re-tagger l'ancienne image et recréer le conteneur).
+Deux réserves. D'une part, ces outils exigent l'accès au socket Docker — un conteneur tiers avec les clés du royaume, j'en parle en détail dans la section [[03_Sécurite Auto Hébergement Podman#Le socket Docker : les clés du royaume|« Le socket Docker : les clés du royaume » de l'article sécurité]]. D'autre part, en cas de mise à jour qui casse, le retour arrière est manuel (re-tagger l'ancienne image et recréer le conteneur).
 
 (\*) : _Attention, toutes les mises à jour applicatives ne se limitent pas à monter une nouvelle image sur le même volume de données, certaines versions majeures applicatives introduisent des braking-changes qui affectent les données sur disque (conversions de modèles de données de configuration, ...). Parfois, le retour arrière n'est pas possible. On conservera le principe général de faire un backup (ou un snapshot) avant de mettre à jour._
 ### Podman : l'auto-update est dans la boîte
@@ -296,7 +296,7 @@ Trois profils, trois vainqueurs :
 
 ## Mon choix
 
-Vous connaissez la conclusion si vous suivez ce vault : **Podman et ses quadlets** portent mon socle de services. La cohérence avec [[Securite_AutoHebergement_Podman|ma démarche sécurité]] (rootless, pas de daemon, pas de socket à exposer à un outil de mise à jour), la sobriété d'un moteur qui se fait oublier, et `podman auto-update` qui fait le travail chaque nuit avec filet de sécurité : pour un homelab pensé comme une infrastructure durable, c'est l'équilibre qui me convient pour **mon** cas d'usage. Chacun doit se faire son avis.
+Vous connaissez la conclusion si vous suivez ce vault : **Podman et ses quadlets** portent mon socle de services. La cohérence avec [[03_Sécurite Auto Hébergement Podman|ma démarche sécurité]] (rootless, pas de daemon, pas de socket à exposer à un outil de mise à jour), la sobriété d'un moteur qui se fait oublier, et `podman auto-update` qui fait le travail chaque nuit avec filet de sécurité : pour un homelab pensé comme une infrastructure durable, c'est l'équilibre qui me convient pour **mon** cas d'usage. Chacun doit se faire son avis.
 
 A titre personnel, je ne renonce pas à Kubernetes pour autant : un [[k3s]] mono-nœud vit dans mon lab, précisément parce qu'un homelab sert \*aussi\* à ça : se confronter aux outils qu'on croise en entreprise, se batir des expériences, développer ses connaissances et faire de la veille technique. Helm et ArgoCD sont au programme des prochains articles de ma todo, et les unités `.kube` des quadlets ménagent une passerelle élégante entre les deux mondes : le YAML écrit pour Podman aujourd'hui pourra rejoindre le cluster demain.
 

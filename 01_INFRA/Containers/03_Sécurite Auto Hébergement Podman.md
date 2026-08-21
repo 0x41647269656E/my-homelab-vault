@@ -14,6 +14,7 @@ date: 31-05-2026
 last_modified: 31-05-2026
 status: published
 ---
+# article a revoir 
 # Sécurité et Auto-Hébergement avec Podman
 
 ## Introduction
@@ -141,7 +142,7 @@ Si vous restez sous Docker, des parades existent :
 2. réserver ces outils à un réseau interne, jamais exposé ;
 3. monter le socket en lecture seule (`:ro`)... protection largement illusoire : cela empêche de remplacer le fichier, pas d’écrire *dans* le socket — l’API reste pleinement utilisable.
 
-Et sous Podman ? Le problème disparaît en grande partie par construction : pas de daemon, donc pas de socket root central obligatoire. Podman sait exposer un socket compatible avec l’API Docker (`podman.socket`) pour les outils qui en dépendent, mais il est optionnel et, en rootless, il porte les droits d’un utilisateur ordinaire — pas ceux de root. Quant au besoin le plus courant, les mises à jour automatiques, Podman le couvre nativement via systemd, sans socket ni conteneur tiers : voir [[Duel_Docker_Podman_Kubernetes|le comparatif des plateformes]].
+Et sous Podman ? Le problème disparaît en grande partie par construction : pas de daemon, donc pas de socket root central obligatoire. Podman sait exposer un socket compatible avec l’API Docker (`podman.socket`) pour les outils qui en dépendent, mais il est optionnel et, en rootless, il porte les droits d’un utilisateur ordinaire — pas ceux de root. Quant au besoin le plus courant, les mises à jour automatiques, Podman le couvre nativement via systemd, sans socket ni conteneur tiers : voir [[01_Duel de plateformes d'hébergement de conteneurs|le comparatif des plateformes]].
 
 ### Le mode rootless
 
