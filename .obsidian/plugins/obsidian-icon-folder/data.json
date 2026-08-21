@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "💸",
+      "💤",
       "🏁",
       "🎆",
-      "📋",
-      "❓",
-      "🏗"
+      "📋"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -41,5 +41,7 @@
   "00_Guide de démarrage/05_Gestion des accès distants.md": "📡",
   "00_Guide de démarrage/03_Les plateformes.md": "🏗",
   "00_Guide de démarrage/06_Point sur l'electricité.md": "⚡",
-  "00_Guide de démarrage/00_Starting point.md": "🏁"
+  "00_Guide de démarrage/00_Starting point.md": "🏁",
+  "00_Guide de démarrage/07_Spindown des disques sous Linux.md": "💤",
+  "00_Guide de démarrage/08_Choisir ses disques durs.md": "💸"
 }
