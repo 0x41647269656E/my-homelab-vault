@@ -337,5 +337,5 @@ Voir [[05_AUTOMATION/ansible/ubuntu-server-hardening/site.yml]] pour le détail 
 - [Proxmox Firewall](https://pve.proxmox.com/wiki/Firewall)
 - [Ubuntu Server 24.04 LTS](https://ubuntu.com/server/docs)
 - [Podman rootless](https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md)
-- [[01_INFRA/Containers/Avantages_Conteneurisation_AutoHebergement]]
+- [[01_INFRA/Containers/00_Les avantages de la conteneurisation]]
 - [[04_SECURITY/Self-hosting-securise-avec-Podman]]
