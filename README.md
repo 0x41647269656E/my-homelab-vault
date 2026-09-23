@@ -8,7 +8,7 @@ Dans ce dépôt, je conserve et documente toute mon infrastructure personnelle h
 
 Je développe mon homelab comme une infrastructure personnelle de services auto-hébergée afin de conserver le contrôle de mes données, automatiser mon environnement numérique, tester des architectures complexes, expérimenter sans contrainte et, surtout, reprendre le contrôle total sur mes outils et mes informations en limitant l'accès à mes informations à des intelligences artificielles de recommandation de contenus apprenant des usages de chacun sur internet.
 
-If you are not paying for the product, you _are_ the product
+If you are not paying for the product, you _are_ the product.<br>
 Celui qui paie l'orchestre, choisi la musique.
 
 ---
